@@ -1,5 +1,6 @@
 package com.example.attendancecheckapp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,24 +34,12 @@ interface MyAPI {
 //    @DELETE("/test/{pk}/")
 //    Call<LoginRequest> delete_posts(@Path("pk") int pk);
 
-//    @GET("/test/")
-//    Call<List<TestItem>> get_posts();
-
-//    @GET("/test")
-//    Call<LoginRequest> get_posts();
-//
-//    @GET("/test/{pk}/")
-//    Call<LoginRequest> get_post_pk(@Path("pk") int pk);
 
     @POST("user/login")
     Call<LoginResponse> getLoginResponse(@Body LoginRequest loginRequest);
 
-//    @Headers({"Authorization", "Bearer "+ token})
-//    @GET("lecture?userId={id}")
-//    Call<UserProfile> getUserLecture(@Path("id") String id);
-
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("lecture")
-    Call<List<Lecture>> getUserLecture(@Query("userId") String id, @Header("Authorization") String auth);
+    Call<ArrayList<Lecture>> getUserLecture(@Query("userId") String id, @Header("Authorization") String auth);
 
 }

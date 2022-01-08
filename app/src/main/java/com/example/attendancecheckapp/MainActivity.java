@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
                 } else {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, response.errorBody().toString());
-                    Log.d(TAG, call.request().body().toString());
+//                    Log.d(TAG, call.request().body().toString());
                 }
             }
 
