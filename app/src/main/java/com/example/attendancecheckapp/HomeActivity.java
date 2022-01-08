@@ -23,9 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
-    private final String BASE_URL = "http://15.164.68.238:8080";
-    private MyAPI mMyAPI;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

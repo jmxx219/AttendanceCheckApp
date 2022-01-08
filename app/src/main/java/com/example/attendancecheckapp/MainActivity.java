@@ -23,10 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
     private final String TAG = getClass().getSimpleName();
 
-    // server url
-    private final String BASE_URL = "http://15.164.68.238:8080";
-    private MyAPI mMyAPI;
-
     private EditText loginId;
     private EditText loginPw;
 
@@ -61,22 +57,32 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
     }
 
     private void StartLoginResponse() {
-        initMyAPI(BASE_URL);
         Log.d(TAG, "Login POST");
 
         LoginRequest item = new LoginRequest(loginId.getText().toString(), loginPw.getText().toString());
 
-        Call<LoginResponse> postCall = mMyAPI.getLoginResponse(item);
+        Call<LoginResponse> postCall = RetrofitClient.getApiService().getLoginResponse(item);
         postCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse res = response.body();
+
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "등록 완료");
                     Log.d(TAG, res.getToken());
+
                     Toast.makeText(MainActivity.this, "로그인 성공", Toast.LENGTH_LONG).show();
+
+                    try {
+                        JWTUtils.decoded(res.getToken());
+                        PreferenceManager.setString(getApplicationContext(), "userId", JWTUtils.getPayload("id")); // 값 저장
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     PreferenceManager.setString(getApplicationContext(), "token", res.getToken()); // 값 저장
+
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                 } else {
@@ -92,20 +98,5 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
             }
         });
 
-    }
-
-    private void initMyAPI(String baseUrl) {
-        Log.d(TAG, "initMyAPI : " + baseUrl);
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        mMyAPI = retrofit.create(MyAPI.class);
     }
 }

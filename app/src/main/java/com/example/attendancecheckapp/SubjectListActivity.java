@@ -21,9 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SubjectListActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
-    private final String BASE_URL = "http://15.164.68.238:8080";
-    private MyAPI mMyAPI;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,15 +30,13 @@ public class SubjectListActivity extends AppCompatActivity {
     }
 
     private void UserLectureResponse() {
-        initMyAPI(BASE_URL);
         Log.d(TAG, "User Lecture");
 
-        String userId = "2";
+        String userId = PreferenceManager.getString(getApplicationContext(), "userId");
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
         Log.d(TAG, userId + " : " + token);
 
-
-        Call<ArrayList<Lecture>> postCall = mMyAPI.getUserLecture(userId, token);
+        Call<ArrayList<Lecture>> postCall = RetrofitClient.getApiService().getUserLecture(userId, token);
         postCall.enqueue(new Callback<ArrayList<Lecture>>() {
             @Override
             public void onResponse(Call<ArrayList<Lecture>> call, Response<ArrayList<Lecture>> response) {
@@ -67,22 +62,4 @@ public class SubjectListActivity extends AppCompatActivity {
         });
 
     }
-
-
-    private void initMyAPI(String baseUrl) {
-        Log.d(TAG, "initMyAPI : " + baseUrl);
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        mMyAPI = retrofit.create(MyAPI.class);
-    }
-
-
 }
