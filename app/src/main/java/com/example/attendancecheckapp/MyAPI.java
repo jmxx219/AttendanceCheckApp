@@ -42,4 +42,8 @@ interface MyAPI {
     @GET("lecture")
     Call<ArrayList<Lecture>> getUserLecture(@Query("userId") String id, @Header("Authorization") String auth);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("lecture/student")
+    Call<ArrayList<LectureAttendance>> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
+
 }

@@ -5,6 +5,9 @@
       <map>
         <entry key="app/src/main/res/drawable/borderline.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/borderline2.xml" value="0.2546875" />
+        <entry key="app/src/main/res/layout/activity_attendance.xml" value="0.2375" />
+        <entry key="app/src/main/res/layout/activity_home_professor.xml" value="0.2375" />
+        <entry key="app/src/main/res/layout/activity_home_sutdent.xml" value="0.2375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/home.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/lecture_list.xml" value="0.1" />

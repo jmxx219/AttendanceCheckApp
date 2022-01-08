@@ -1,6 +1,7 @@
 package com.example.attendancecheckapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -24,7 +25,7 @@ public class LectureListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lecture_list);
+        setContentView(R.layout.activity_lecture_list);
 
         context = this;
         lecture_view = (ListView) findViewById(R.id.lectureListView);
@@ -32,10 +33,19 @@ public class LectureListActivity extends AppCompatActivity {
         lecture_view.setAdapter(adapter);
 
         UserLectureResponse();
+
+        lecture_view.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent( getApplicationContext(), AttendanceActivity.class);
+
+            // intent 객체에 데이터를 실어서 보내기
+            Lecture item = (Lecture) adapter.getItem(position);
+            intent.putExtra("lectureName", item.getLectureName());
+            intent.putExtra("lectureId", item.getLectureId());
+
+            startActivity(intent);
+        });
     }
 
-    public void showLectureList() {
-    }
 
     private void UserLectureResponse() {
         Log.d(TAG, "User Lecture");
