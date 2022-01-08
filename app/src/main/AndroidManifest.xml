@@ -24,7 +24,7 @@
                     android:label="Home">
                 </activity>
                 <activity
-                    android:name=".SubjectListActivity"
+                    android:name=".LectureListActivity"
                     android:label="SubjectList">
                 </activity>
     </application>

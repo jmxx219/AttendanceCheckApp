@@ -9,6 +9,9 @@ public class Lecture {
     @SerializedName("lecture_id")
     public String lecture_id;
 
+    @SerializedName("lecture_name")
+    public String lecture_name;
+
     @SerializedName("lecture_room")
     public String lecture_room;
 
@@ -21,12 +24,24 @@ public class Lecture {
     @SerializedName("lecture_end")
     public String lecture_end;
 
+
+    public Lecture(String id, String lectureId, String lectureName, String lectureRoom, String lectureDay, String lectureStartTime, String lectureEndTime) {
+        this.id = id;
+        this.lecture_id = lectureId;
+        this.lecture_name = lectureName;
+        this.lecture_room = lectureRoom;
+        this.day_of_week = lectureDay;
+        this.lecture_start = lectureStartTime;
+        this.lecture_end = lectureEndTime;
+    }
+
     public String getId() {
         return id;
     }
     public String getLectureId() {
         return lecture_id;
     }
+    public String getLectureName() { return lecture_name; }
     public String getLectureRoom() { return lecture_room; }
     public String getDayOfWeek() {
         return day_of_week;
@@ -43,6 +58,9 @@ public class Lecture {
     }
     public void setLectureId(String lecture_id) {
         this.lecture_id = lecture_id;
+    }
+    public void setLectureName(String lecture_name) {
+        this.lecture_name = lecture_name;
     }
     public void setLectureRoom(String lecture_room) {
         this.lecture_room = lecture_room;

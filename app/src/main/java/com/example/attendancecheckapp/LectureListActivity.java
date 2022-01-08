@@ -1,32 +1,40 @@
 package com.example.attendancecheckapp;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SubjectListActivity extends AppCompatActivity {
+public class LectureListActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
+
+    public static Context context;
+
+    private ListView lecture_view;
+    LectureListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.subject_list);
+        setContentView(R.layout.lecture_list);
+
+        context = this;
+        lecture_view = (ListView) findViewById(R.id.lectureListView);
+        adapter = new LectureListViewAdapter();
+        lecture_view.setAdapter(adapter);
 
         UserLectureResponse();
+    }
+
+    public void showLectureList() {
     }
 
     private void UserLectureResponse() {
@@ -45,7 +53,10 @@ public class SubjectListActivity extends AppCompatActivity {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "유저 강의 목록");
                     for(Lecture le : res){
-                        Log.d(TAG, le.getId() +", " + le.getLectureId() + ", " + le.getLectureRoom());
+                        // id, lectureId, lectureRoom, lectureDay, lectureStartTime, lectureEndTime
+                        adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
+                        adapter.notifyDataSetChanged();
+                        Log.d(TAG, le.getId() +", " + le.getLectureId() + ", " + le.getLectureName());
                     }
 
                 } else {
