@@ -2,7 +2,7 @@ package com.example.attendancecheckapp;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LectureAttendance {
+public class Attendance {
     @SerializedName("id")
     public String id;
 
@@ -20,7 +20,7 @@ public class LectureAttendance {
 
 
 
-    public LectureAttendance(String id, String userId, String week, String lectureDay, String isAttend) {
+    public Attendance(String id, String userId, String week, String lectureDay, String isAttend) {
         this.id = id;
         this.user_id = userId;
         this.week = week;

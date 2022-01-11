@@ -1,17 +1,13 @@
 package com.example.attendancecheckapp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /*
@@ -35,15 +31,26 @@ interface MyAPI {
 //    Call<LoginRequest> delete_posts(@Path("pk") int pk);
 
 
+    /**
+     * User Controller
+     */
     @POST("user/login")
     Call<LoginResponse> getLoginResponse(@Body LoginRequest loginRequest);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("user/me")
+    Call<User> getUser(@Header("Authorization") String auth);
+
+
+    /**
+     * Lecture Controller
+     */
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("lecture")
     Call<ArrayList<Lecture>> getUserLecture(@Query("userId") String id, @Header("Authorization") String auth);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("lecture/student")
-    Call<ArrayList<LectureAttendance>> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
+    Call<ArrayList<Attendance>> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
 
 }

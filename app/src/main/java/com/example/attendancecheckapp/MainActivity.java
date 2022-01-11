@@ -79,12 +79,8 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
                         PreferenceManager.setString(getApplicationContext(), "userId", JWTUtils.getPayload("id")); // 값 저장
 
                         // userType : 1 - 교수, 0 - 학생
-                        if(JWTUtils.getPayload("id").toString().equals("4")) {
-                            PreferenceManager.setString(getApplicationContext(), "userType", "1");
-                        }
-                        else {
-                            PreferenceManager.setString(getApplicationContext(), "userType", "0");
-                        }
+//                        PreferenceManager.setString(getApplicationContext(), "userType", JWTUtils.getPayload("userType"));
+                        PreferenceManager.setString(getApplicationContext(), "userType", "1");
 
                     } catch (Exception e) {
                         e.printStackTrace();
