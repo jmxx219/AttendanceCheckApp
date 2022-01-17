@@ -140,27 +140,31 @@
         app:layout_constraintTop_toBottomOf="@+id/view4"
         tools:ignore="MissingConstraints" />
 
-    <View
-        android:id="@+id/view5"
-        android:layout_width="329dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="24dp"
-        android:background="#f9fafd"
+    <ListView
+        android:id="@+id/todayLectureListView"
+        android:layout_width="336dp"
+        android:layout_height="184dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.426"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view6"></View>
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.956"></ListView>
 
-    <View
-        android:id="@+id/view6"
-        android:layout_width="329dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="12dp"
-        android:background="#f9fafd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.426"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"></View>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자동 출결"
+        android:textColor="#12175e"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.136" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

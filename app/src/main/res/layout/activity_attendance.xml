@@ -53,7 +53,6 @@
         android:layout_width="332dp"
         android:layout_height="433dp"
         android:layout_marginTop="12dp"
-        android:focusableInTouchMode="true"
         android:background="@drawable/borderline"
         android:backgroundTint="@color/purple"
         app:layout_constraintBottom_toBottomOf="parent"

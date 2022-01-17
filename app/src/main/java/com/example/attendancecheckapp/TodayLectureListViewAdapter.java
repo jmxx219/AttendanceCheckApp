@@ -8,11 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class LectureListViewAdapter extends BaseAdapter {
+public class TodayLectureListViewAdapter extends BaseAdapter {
     private ArrayList<Lecture> listViewItemList = new ArrayList<Lecture>();
 //    private Map<String, List<Lecture>> map = new HashMap<>();
 
@@ -36,20 +33,16 @@ public class LectureListViewAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_lecture, parent, false);
+            convertView = inflater.inflate(R.layout.listview_today_lecture, parent, false);
         }
 
-        TextView lectureName = (TextView) convertView.findViewById(R.id.lectureName) ;
-        TextView lectureRoom = (TextView) convertView.findViewById(R.id.lectureRoom) ;
-        TextView lectureDay = (TextView) convertView.findViewById(R.id.lectureDay) ;
-        TextView lectureStartTime = (TextView) convertView.findViewById(R.id.lectureStartTime) ;
-        TextView lectureEndTime = (TextView) convertView.findViewById(R.id.lectureEndTime) ;
+        TextView lectureName = (TextView) convertView.findViewById(R.id.todayLectureName);
+        TextView lectureStartTime = (TextView) convertView.findViewById(R.id.todayLectureStartTime) ;
+        TextView lectureEndTime = (TextView) convertView.findViewById(R.id.todayLectureEndTime) ;
 
         Lecture listViewItem = listViewItemList.get(position);
 
         lectureName.setText(listViewItem.getLectureName());
-        lectureRoom.setText(listViewItem.getLectureRoom());
-        lectureDay.setText(listViewItem.getDayOfWeek());
         lectureStartTime.setText(listViewItem.getLectureStart());
         lectureEndTime.setText(listViewItem.getLectureEnd());
 
