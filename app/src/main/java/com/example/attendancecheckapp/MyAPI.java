@@ -23,17 +23,6 @@ import retrofit2.http.Query;
  */
 
 interface MyAPI {
-
-//    @POST("/test/")
-//    Call<LoginRequest> post_posts(@Body LoginRequest post);
-//
-//    @PATCH("/test/{pk}/")
-//    Call<LoginRequest> patch_posts(@Path("pk") int pk, @Body LoginRequest post);
-//
-//    @DELETE("/test/{pk}/")
-//    Call<LoginRequest> delete_posts(@Path("pk") int pk);
-
-
     /**
      * User Controller
      */
@@ -60,15 +49,19 @@ interface MyAPI {
     @GET("lecture/professor")
     Call<String> getLecture(@Query("lectureId") String id, @Header("Authorization") String auth);
 
+
     /**
      * Attendance-controller
      */
-
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("attendance/student")
-    Call<String> getStudentList(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week,@Header("Authorization") String auth);
+    Call<String> getStudentList(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week, @Header("Authorization") String auth);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @PATCH("attendance/student")
-    Call<String> getChangeOfAttendance(@Query("attendanceId") String attendanceId, @Header("Authorization") String auth);
+    Call<String> setChangeOfAttendance(@Query("attendanceId") String attendanceId, @Header("Authorization") String auth);
+
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @PATCH("attendance/auto-check")
+    Call<String> setAutoCheck(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week, @Header("Authorization") String auth);
 }

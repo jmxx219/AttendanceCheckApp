@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "오늘 유저 수강 목록");
-                    ArrayList<Lecture> lectureList = new ArrayList<>();
+                    ArrayList<LectureInfo> lectureInfoList = new ArrayList<>();
 
                     try{
                         JSONObject jsonObject = new JSONObject(response.body());
@@ -86,26 +86,26 @@ public class HomeActivity extends AppCompatActivity {
                         for(int i=0; i<lectureArray.length(); i++){
                             JSONObject lectureObject = lectureArray.getJSONObject(i);
 
-                            Lecture lecture = new Lecture();
-                            lecture.setId(lectureObject.getString("lectureInfoId"));
-                            lecture.setLectureId(lectureObject.getString("lectureId"));
-                            lecture.setLectureName(lectureObject.getString("lectureName"));
-                            lecture.setLectureRoom(lectureObject.getString("lectureRoom"));
+                            LectureInfo lectureInfo = new LectureInfo();
+                            lectureInfo.setId(lectureObject.getString("lectureInfoId"));
+                            lectureInfo.setLectureId(lectureObject.getString("lectureId"));
+                            lectureInfo.setLectureName(lectureObject.getString("lectureName"));
+                            lectureInfo.setLectureRoom(lectureObject.getString("lectureRoom"));
 
                             JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
-                            lecture.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
-                            lecture.setLectureStart(lectureTimeObject.getString("lecture_start"));
-                            lecture.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+                            lectureInfo.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
+                            lectureInfo.setLectureStart(lectureTimeObject.getString("lecture_start"));
+                            lectureInfo.setLectureEnd(lectureTimeObject.getString("lecture_end"));
 
-                            Log.d(TAG, lecture.toString());
-                            lectureList.add(lecture);
+                            Log.d(TAG, lectureInfo.toString());
+                            lectureInfoList.add(lectureInfo);
                         }
 
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    for(Lecture le : lectureList){
+                    for(LectureInfo le : lectureInfoList){
                         // id, lectureId, lectureRoom, lectureDay, lectureStartTime, lectureEndTime
                         if(days[day_of_week].equals(le.getDayOfWeek())) {
                             adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
@@ -131,6 +131,11 @@ public class HomeActivity extends AppCompatActivity {
 
     public void subjectListClick(View view) {
         Intent intent = new Intent(HomeActivity.this, LectureListActivity.class);
+        startActivity(intent);
+    }
+
+    public void autoCheckClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, AutoCheckActivity.class);
         startActivity(intent);
     }
 

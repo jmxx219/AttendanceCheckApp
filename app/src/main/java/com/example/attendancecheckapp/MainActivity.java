@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(MainActivity.this, "로그인 성공", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
                     try {
                         JWTUtils.decoded(res.getToken());

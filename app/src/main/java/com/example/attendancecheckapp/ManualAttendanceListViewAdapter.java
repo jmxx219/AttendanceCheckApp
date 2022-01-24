@@ -11,10 +11,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -68,7 +64,7 @@ public class ManualAttendanceListViewAdapter extends BaseAdapter {
 
                 String token = "Bearer " + PreferenceManager.getString(context, "token");
 
-                Call<String> postCall = RetrofitClient.getApiService().getChangeOfAttendance(listViewItem.getAttendanceId(), token);
+                Call<String> postCall = RetrofitClient.getApiService().setChangeOfAttendance(listViewItem.getAttendanceId(), token);
                 postCall.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

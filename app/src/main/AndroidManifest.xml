@@ -39,6 +39,10 @@
             android:name=".ManualProfessorAttendanceActivity"
             android:label="ManualAttendance">
         </activity>
+        <activity
+            android:name=".AutoCheckActivity"
+            android:label="AutoCheckActivity">
+        </activity>
     </application>
 
 </manifest>

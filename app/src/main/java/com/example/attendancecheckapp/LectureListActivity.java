@@ -47,7 +47,7 @@ public class LectureListActivity extends AppCompatActivity {
             else intent = new Intent(getApplicationContext(), ProfessorAttendanceActivity.class);
 
             // intent 객체에 데이터를 실어서 보내기
-            Lecture item = (Lecture) adapter.getItem(position);
+            LectureInfo item = (LectureInfo) adapter.getItem(position);
             intent.putExtra("lectureName", item.getLectureName());
             intent.putExtra("lectureId", item.getLectureId());
 
@@ -71,7 +71,7 @@ public class LectureListActivity extends AppCompatActivity {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "유저 강의 목록");
 
-                    ArrayList<Lecture> lectureList = new ArrayList<>();
+                    ArrayList<LectureInfo> lectureInfoList = new ArrayList<>();
 
                     try{
                         JSONObject jsonObject = new JSONObject(response.body());
@@ -80,26 +80,26 @@ public class LectureListActivity extends AppCompatActivity {
                         for(int i=0; i<lectureArray.length(); i++){
                             JSONObject lectureObject = lectureArray.getJSONObject(i);
 
-                            Lecture lecture = new Lecture();
-                            lecture.setId(lectureObject.getString("lectureInfoId"));
-                            lecture.setLectureId(lectureObject.getString("lectureId"));
-                            lecture.setLectureName(lectureObject.getString("lectureName"));
-                            lecture.setLectureRoom(lectureObject.getString("lectureRoom"));
+                            LectureInfo lectureInfo = new LectureInfo();
+                            lectureInfo.setId(lectureObject.getString("lectureInfoId"));
+                            lectureInfo.setLectureId(lectureObject.getString("lectureId"));
+                            lectureInfo.setLectureName(lectureObject.getString("lectureName"));
+                            lectureInfo.setLectureRoom(lectureObject.getString("lectureRoom"));
 
                             JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
-                            lecture.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
-                            lecture.setLectureStart(lectureTimeObject.getString("lecture_start"));
-                            lecture.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+                            lectureInfo.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
+                            lectureInfo.setLectureStart(lectureTimeObject.getString("lecture_start"));
+                            lectureInfo.setLectureEnd(lectureTimeObject.getString("lecture_end"));
 
-                            Log.d(TAG, lecture.toString());
-                            lectureList.add(lecture);
+                            Log.d(TAG, lectureInfo.toString());
+                            lectureInfoList.add(lectureInfo);
                         }
 
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    for(Lecture le : lectureList){
+                    for(LectureInfo le : lectureInfoList){
                         // id, lectureId, lectureRoom, lectureDay, lectureStartTime, lectureEndTime
                         adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
                         adapter.notifyDataSetChanged();

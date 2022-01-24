@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class TodayLectureListViewAdapter extends BaseAdapter {
-    private ArrayList<Lecture> listViewItemList = new ArrayList<Lecture>();
+    private ArrayList<LectureInfo> listViewItemList = new ArrayList<LectureInfo>();
 //    private Map<String, List<Lecture>> map = new HashMap<>();
 
 
@@ -40,7 +40,7 @@ public class TodayLectureListViewAdapter extends BaseAdapter {
         TextView lectureStartTime = (TextView) convertView.findViewById(R.id.todayLectureStartTime) ;
         TextView lectureEndTime = (TextView) convertView.findViewById(R.id.todayLectureEndTime) ;
 
-        Lecture listViewItem = listViewItemList.get(position);
+        LectureInfo listViewItem = listViewItemList.get(position);
 
         lectureName.setText(listViewItem.getLectureName());
         lectureStartTime.setText(listViewItem.getLectureStart());
@@ -60,7 +60,7 @@ public class TodayLectureListViewAdapter extends BaseAdapter {
     }
 
     public void addItem(String id, String lectureId, String lectureName, String lectureRoom, String lectureDay, String lectureStartTime, String lectureEndTime) {
-        Lecture item = new Lecture(id, lectureId, lectureName, lectureRoom, lectureDay, lectureStartTime, lectureEndTime);
+        LectureInfo item = new LectureInfo(id, lectureId, lectureName, lectureRoom, lectureDay, lectureStartTime, lectureEndTime);
         listViewItemList.add(item);
     }
 }

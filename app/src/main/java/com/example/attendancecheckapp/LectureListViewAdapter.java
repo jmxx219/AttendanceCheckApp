@@ -8,12 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LectureListViewAdapter extends BaseAdapter {
-    private ArrayList<Lecture> listViewItemList = new ArrayList<Lecture>();
+    private ArrayList<LectureInfo> listViewItemList = new ArrayList<LectureInfo>();
 //    private Map<String, List<Lecture>> map = new HashMap<>();
 
 
@@ -45,7 +42,7 @@ public class LectureListViewAdapter extends BaseAdapter {
         TextView lectureStartTime = (TextView) convertView.findViewById(R.id.lectureStartTime) ;
         TextView lectureEndTime = (TextView) convertView.findViewById(R.id.lectureEndTime) ;
 
-        Lecture listViewItem = listViewItemList.get(position);
+        LectureInfo listViewItem = listViewItemList.get(position);
 
         lectureName.setText(listViewItem.getLectureName());
         lectureRoom.setText(listViewItem.getLectureRoom());
@@ -67,7 +64,7 @@ public class LectureListViewAdapter extends BaseAdapter {
     }
 
     public void addItem(String id, String lectureId, String lectureName, String lectureRoom, String lectureDay, String lectureStartTime, String lectureEndTime) {
-        Lecture item = new Lecture(id, lectureId, lectureName, lectureRoom, lectureDay, lectureStartTime, lectureEndTime);
+        LectureInfo item = new LectureInfo(id, lectureId, lectureName, lectureRoom, lectureDay, lectureStartTime, lectureEndTime);
         listViewItemList.add(item);
     }
 }

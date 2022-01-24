@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/borderline2.xml" value="0.2546875" />
         <entry key="app/src/main/res/layout/activity_attendance.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_attendance_professor.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_auto_check.xml" value="0.30288461538461536" />
         <entry key="app/src/main/res/layout/activity_home_professor.xml" value="0.2375" />
         <entry key="app/src/main/res/layout/activity_home_sutdent.xml" value="0.2375" />
         <entry key="app/src/main/res/layout/activity_lecture_list.xml" value="0.2504528985507246" />
