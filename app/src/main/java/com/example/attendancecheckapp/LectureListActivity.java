@@ -8,6 +8,10 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -19,6 +23,7 @@ public class LectureListActivity extends AppCompatActivity {
 
     public static Context context;
 
+    String userType;
     private ListView lecture_view;
     LectureListViewAdapter adapter;
 
@@ -31,11 +36,15 @@ public class LectureListActivity extends AppCompatActivity {
         lecture_view = (ListView) findViewById(R.id.lectureListView);
         adapter = new LectureListViewAdapter();
         lecture_view.setAdapter(adapter);
+        userType = PreferenceManager.getString(getApplicationContext(), "userType");
 
         UserLectureResponse();
 
         lecture_view.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent( getApplicationContext(), AttendanceActivity.class);
+            Intent intent;
+
+            if(userType.equals("STUDENT")) intent = new Intent(getApplicationContext(), StudentAttendanceActivity.class);
+            else intent = new Intent(getApplicationContext(), ProfessorAttendanceActivity.class);
 
             // intent 객체에 데이터를 실어서 보내기
             Lecture item = (Lecture) adapter.getItem(position);
@@ -54,15 +63,43 @@ public class LectureListActivity extends AppCompatActivity {
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
         Log.d(TAG, userId + " : " + token);
 
-        Call<ArrayList<Lecture>> postCall = RetrofitClient.getApiService().getUserLecture(userId, token);
-        postCall.enqueue(new Callback<ArrayList<Lecture>>() {
+        Call<String> postCall = RetrofitClient.getApiService().getUserLecture(token);
+        postCall.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ArrayList<Lecture>> call, Response<ArrayList<Lecture>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<Lecture> res = response.body();
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "유저 강의 목록");
-                    for(Lecture le : res){
+
+                    ArrayList<Lecture> lectureList = new ArrayList<>();
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        JSONArray lectureArray = jsonObject.getJSONArray("data");
+
+                        for(int i=0; i<lectureArray.length(); i++){
+                            JSONObject lectureObject = lectureArray.getJSONObject(i);
+
+                            Lecture lecture = new Lecture();
+                            lecture.setId(lectureObject.getString("lectureInfoId"));
+                            lecture.setLectureId(lectureObject.getString("lectureId"));
+                            lecture.setLectureName(lectureObject.getString("lectureName"));
+                            lecture.setLectureRoom(lectureObject.getString("lectureRoom"));
+
+                            JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
+                            lecture.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
+                            lecture.setLectureStart(lectureTimeObject.getString("lecture_start"));
+                            lecture.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+
+                            Log.d(TAG, lecture.toString());
+                            lectureList.add(lecture);
+                        }
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    for(Lecture le : lectureList){
                         // id, lectureId, lectureRoom, lectureDay, lectureStartTime, lectureEndTime
                         adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
                         adapter.notifyDataSetChanged();
@@ -77,7 +114,7 @@ public class LectureListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Lecture>> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.d(TAG, "Fail msg : " + t.getMessage());
             }
         });

@@ -1,6 +1,7 @@
 package com.example.attendancecheckapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class AttendanceListViewAdapter extends BaseAdapter {
     private ArrayList<Attendance> listViewItemList = new ArrayList<Attendance>();
 
-
+    public static Context context;
 
     public void ListViewAdapter() {
 
@@ -39,17 +40,31 @@ public class AttendanceListViewAdapter extends BaseAdapter {
 
         TextView week = (TextView) convertView.findViewById(R.id.week) ;
         TextView dayOfWeek = (TextView) convertView.findViewById(R.id.dayOfWeek) ;
-        Button attend = (Button) convertView.findViewById(R.id.attend) ;
+        Button attendButton = (Button) convertView.findViewById(R.id.attend) ;
 
         Attendance listViewItem = listViewItemList.get(position);
 
         week.setText(listViewItem.getWeek() + "주차");
         dayOfWeek.setText(listViewItem.getDayOfWeek() + "요일");
 
-        // attend가 0이라면 결석, 1이라면 출석
-        if(listViewItem.getIsAttend().equals("0")) attend.setText("N");
-        else if(listViewItem.getIsAttend().equals("1")) attend.setText("Y");
 
+        if(PreferenceManager.getString(context, "userType").equals("PROFESSOR")){
+            // 교수일 때, 출석 여부 버튼 안보이게
+            attendButton.setVisibility(View.INVISIBLE);
+            attendButton.setEnabled(true);
+
+        }
+        else {
+            // attend가 0이라면 결석, 1이라면 출석
+            if(listViewItem.getIsAttend().equals("0")) {
+                attendButton.setText("N");
+                attendButton.setBackgroundColor(Color.parseColor("#dc143c"));
+            }
+            else if(listViewItem.getIsAttend().equals("1")) {
+                attendButton.setText("Y");
+                attendButton.setBackgroundColor(Color.parseColor("#4169E1"));
+            }
+        }
         return convertView;
     }
 
@@ -63,8 +78,8 @@ public class AttendanceListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position) ;
     }
 
-    public void addItem(String id, String userId, String week, String lectureDay, String isAttend) {
-        Attendance item = new Attendance(id, userId, week, lectureDay, isAttend);
+    public void addItem(String id, String week, String lectureDay, String isAttend) {
+        Attendance item = new Attendance(id, week, lectureDay, isAttend);
         listViewItemList.add(item);
     }
 }

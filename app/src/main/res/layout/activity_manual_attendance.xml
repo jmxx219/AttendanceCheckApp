@@ -34,22 +34,22 @@
         app:srcCompat="@drawable/iconly_curved_arrow_left_2" />
 
     <TextView
-        android:id="@+id/lectureAttendanceName"
+        android:id="@+id/manualAttendanceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="알고리즘 및 실습"
+        android:text="알고 1주 "
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.026" />
 
     <ListView
-        android:id="@+id/attendanceStudentListView"
+        android:id="@+id/manualAttendanceStudentListView"
         android:layout_width="332dp"
         android:layout_height="433dp"
         android:layout_marginTop="12dp"
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lectureAttendanceName"
+        app:layout_constraintTop_toBottomOf="@+id/manualAttendanceName"
         app:layout_constraintVertical_bias="0.151"></ListView>
 
 

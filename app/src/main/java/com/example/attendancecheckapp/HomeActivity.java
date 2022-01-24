@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -40,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_professor);
 
         userType = PreferenceManager.getString(getApplicationContext(), "userType");
-        if(userType.equals("0")) setContentView(R.layout.activity_home_sutdent);
+        if(userType.equals("STUDENT")) setContentView(R.layout.activity_home_sutdent);
 
         uName = findViewById(R.id.userName);
         uType = findViewById(R.id.userType);
@@ -66,21 +70,47 @@ public class HomeActivity extends AppCompatActivity {
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
         Log.d(TAG, userId + " : " + token);
 
-        Call<ArrayList<Lecture>> postCall = RetrofitClient.getApiService().getUserLecture(userId, token);
-        postCall.enqueue(new Callback<ArrayList<Lecture>>() {
+        Call<String> postCall = RetrofitClient.getApiService().getUserLecture(token);
+        postCall.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ArrayList<Lecture>> call, Response<ArrayList<Lecture>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<Lecture> res = response.body();
                     Log.d(TAG, "Status Code : " + response.code());
-                    Log.d(TAG, "유저 강의 목록");
-                    for(Lecture le : res){
+                    Log.d(TAG, "오늘 유저 수강 목록");
+                    ArrayList<Lecture> lectureList = new ArrayList<>();
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        JSONArray lectureArray = jsonObject.getJSONArray("data");
+
+                        for(int i=0; i<lectureArray.length(); i++){
+                            JSONObject lectureObject = lectureArray.getJSONObject(i);
+
+                            Lecture lecture = new Lecture();
+                            lecture.setId(lectureObject.getString("lectureInfoId"));
+                            lecture.setLectureId(lectureObject.getString("lectureId"));
+                            lecture.setLectureName(lectureObject.getString("lectureName"));
+                            lecture.setLectureRoom(lectureObject.getString("lectureRoom"));
+
+                            JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
+                            lecture.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
+                            lecture.setLectureStart(lectureTimeObject.getString("lecture_start"));
+                            lecture.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+
+                            Log.d(TAG, lecture.toString());
+                            lectureList.add(lecture);
+                        }
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    for(Lecture le : lectureList){
                         // id, lectureId, lectureRoom, lectureDay, lectureStartTime, lectureEndTime
                         if(days[day_of_week].equals(le.getDayOfWeek())) {
                             adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
                             adapter.notifyDataSetChanged();
                             Log.d(TAG, le.getId() + ", " + le.getLectureId() + ", " + le.getLectureName());
-
                         }
                     }
 
@@ -92,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Lecture>> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.d(TAG, "Fail msg : " + t.getMessage());
             }
         });
@@ -109,19 +139,34 @@ public class HomeActivity extends AppCompatActivity {
 
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
 
-        Call<User> postCall = RetrofitClient.getApiService().getUser(token);
-        postCall.enqueue(new Callback<User>() {
+        Call<String> postCall = RetrofitClient.getApiService().getUser(token);
+        postCall.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    User res = response.body();
-
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "유저 정보 불러오기");
-                    uName.setText(res.getName());
-                    uType.setText(res.getUser_type());
-                    if(userType.equals("0"))  stNumber.setText(res.getSchool_number());
 
+                    User user = new User();
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        JSONObject dataObject = jsonObject.getJSONObject("data");
+
+                        Log.d(TAG, jsonObject.toString());
+                        Log.d(TAG, dataObject.toString());
+
+                        user.setName(dataObject.getString("name"));
+                        user.setUser_type(dataObject.getString("user_type"));
+                        user.setSchool_number(dataObject.getString("school_number"));
+                        Log.d(TAG, user.getSchool_number());
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    uName.setText(user.getName());
+                    uType.setText(user.getUser_type());
+                    if(userType.equals("STUDENT"))  stNumber.setText(user.getSchool_number());
                 } else {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, response.errorBody().toString());
@@ -130,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.d(TAG, "Fail msg : " + t.getMessage());
             }
         });

@@ -3,7 +3,7 @@ package com.example.attendancecheckapp;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
-    @SerializedName("access_token")
+    @SerializedName("token")
     public String token;
 
     public String getToken() {

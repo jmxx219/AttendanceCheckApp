@@ -6,9 +6,6 @@ public class Attendance {
     @SerializedName("id")
     public String id;
 
-    @SerializedName("user_id")
-    public String user_id;
-
     @SerializedName("week")
     public String week;
 
@@ -19,19 +16,18 @@ public class Attendance {
     public String is_attend;
 
 
-
-    public Attendance(String id, String userId, String week, String lectureDay, String isAttend) {
+    public Attendance(String id, String week, String lectureDay, String isAttend) {
         this.id = id;
-        this.user_id = userId;
         this.week = week;
         this.day_of_week = lectureDay;
         this.is_attend = isAttend;
     }
 
-    public String getId() { return id; }
-    public String getUserId() {
-        return user_id;
+    public Attendance() {
+
     }
+
+    public String getId() { return id; }
     public String getWeek() { return week; }
     public String getDayOfWeek() {
         return day_of_week;
@@ -41,9 +37,6 @@ public class Attendance {
     }
 
     public void setId(String id) { this.id = id; }
-    public void setUserId(String lecture_id) {
-        this.user_id = lecture_id;
-    }
     public void setWeek(String lecture_name) {
         this.week = lecture_name;
     }
@@ -54,4 +47,13 @@ public class Attendance {
         this.is_attend = lecture_start;
     }
 
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "id='" + id + '\'' +
+                ", week='" + week + '\'' +
+                ", day_of_week='" + day_of_week + '\'' +
+                ", is_attend='" + is_attend + '\'' +
+                '}';
+    }
 }

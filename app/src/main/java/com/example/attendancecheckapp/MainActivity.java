@@ -8,17 +8,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
     private final String TAG = getClass().getSimpleName();
@@ -61,16 +61,29 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
 
         LoginRequest item = new LoginRequest(loginId.getText().toString(), loginPw.getText().toString());
 
-        Call<LoginResponse> postCall = RetrofitClient.getApiService().getLoginResponse(item);
-        postCall.enqueue(new Callback<LoginResponse>() {
+        Call<String> postCall = RetrofitClient.getApiService().getLoginResponse(item);
+        postCall.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    LoginResponse res = response.body();
-
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, "등록 완료");
-                    Log.d(TAG, res.getToken());
+
+                    LoginResponse res = new LoginResponse();
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        JSONObject dataObject = jsonObject.getJSONObject("data");
+
+                        Log.d(TAG, jsonObject.toString());
+                        Log.d(TAG, dataObject.toString());
+
+                        res.setToken(dataObject.getString("access_token"));
+                        Log.d(TAG, res.getToken());
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     Toast.makeText(MainActivity.this, "로그인 성공", Toast.LENGTH_LONG).show();
 
@@ -78,9 +91,10 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
                         JWTUtils.decoded(res.getToken());
                         PreferenceManager.setString(getApplicationContext(), "userId", JWTUtils.getPayload("id")); // 값 저장
 
-                        // userType : 1 - 교수, 0 - 학생
-//                        PreferenceManager.setString(getApplicationContext(), "userType", JWTUtils.getPayload("userType"));
-                        PreferenceManager.setString(getApplicationContext(), "userType", "1");
+                        // userType : PROFESSOR - 교수, STUDENT - 학생
+                        PreferenceManager.setString(getApplicationContext(), "userType", JWTUtils.getPayload("aud"));
+                        Log.d(TAG, PreferenceManager.getString(getApplicationContext(), "userId"));
+                        Log.d(TAG, PreferenceManager.getString(getApplicationContext(), "userType"));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -93,12 +107,11 @@ public class MainActivity extends AppCompatActivity {  // 로그인 액티비티
                 } else {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, response.errorBody().toString());
-//                    Log.d(TAG, call.request().body().toString());
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.d(TAG, "Fail msg : " + t.getMessage());
             }
         });

@@ -1,5 +1,7 @@
 package com.example.attendancecheckapp;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -7,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -35,22 +38,37 @@ interface MyAPI {
      * User Controller
      */
     @POST("user/login")
-    Call<LoginResponse> getLoginResponse(@Body LoginRequest loginRequest);
+    Call<String> getLoginResponse(@Body LoginRequest loginRequest);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("user/me")
-    Call<User> getUser(@Header("Authorization") String auth);
+    Call<String> getUser(@Header("Authorization") String auth);
 
 
     /**
      * Lecture Controller
      */
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @GET("lecture")
-    Call<ArrayList<Lecture>> getUserLecture(@Query("userId") String id, @Header("Authorization") String auth);
+    @GET("lecture/user")
+    Call<String> getUserLecture(@Header("Authorization") String auth);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("lecture/student")
-    Call<ArrayList<Attendance>> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
+    Call<String> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("lecture/professor")
+    Call<String> getLecture(@Query("lectureId") String id, @Header("Authorization") String auth);
+
+    /**
+     * Attendance-controller
+     */
+
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("attendance/student")
+    Call<String> getStudentList(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week,@Header("Authorization") String auth);
+
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @PATCH("attendance/student")
+    Call<String> getChangeOfAttendance(@Query("attendanceId") String attendanceId, @Header("Authorization") String auth);
 }

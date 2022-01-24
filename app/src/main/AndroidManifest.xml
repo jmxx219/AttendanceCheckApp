@@ -28,8 +28,16 @@
             android:label="LectureList">
         </activity>
         <activity
-            android:name=".AttendanceActivity"
-            android:label="Attendance">
+            android:name=".StudentAttendanceActivity"
+            android:label="StudentAttendance">
+        </activity>
+        <activity
+            android:name=".ProfessorAttendanceActivity"
+            android:label="ProfessorAttendance">
+        </activity>
+        <activity
+            android:name=".ManualProfessorAttendanceActivity"
+            android:label="ManualAttendance">
         </activity>
     </application>
 

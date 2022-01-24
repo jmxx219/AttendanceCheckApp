@@ -35,6 +35,10 @@ public class Lecture {
         this.lecture_end = lectureEndTime;
     }
 
+    public Lecture() {
+
+    }
+
     public String getId() {
         return id;
     }
@@ -75,4 +79,16 @@ public class Lecture {
         this.lecture_end = lecture_end;
     }
 
+    @Override
+    public String toString() {
+        return "Lecture{" +
+                "id='" + id + '\'' +
+                ", lecture_id='" + lecture_id + '\'' +
+                ", lecture_name='" + lecture_name + '\'' +
+                ", lecture_room='" + lecture_room + '\'' +
+                ", day_of_week='" + day_of_week + '\'' +
+                ", lecture_start='" + lecture_start + '\'' +
+                ", lecture_end='" + lecture_end + '\'' +
+                '}';
+    }
 }
