@@ -35,6 +35,7 @@ public class AutoCheckActivity extends AppCompatActivity {
     int currHour;
     String lectureInfoId;
     String week = "1";
+    boolean isAutoCheck;
 
 
     private String[] days = {"일", "월", "화", "수", "목", "금", "토"};
@@ -72,7 +73,7 @@ public class AutoCheckActivity extends AppCompatActivity {
                     try{
                         JSONObject jsonObject = new JSONObject(response.body());
                         JSONArray lectureArray = jsonObject.getJSONArray("data");
-
+                        isAutoCheck = false;
                         for(int i=0; i<lectureArray.length(); i++){
                             JSONObject lectureObject = lectureArray.getJSONObject(i);
 
@@ -86,10 +87,11 @@ public class AutoCheckActivity extends AppCompatActivity {
                             le.setLectureStart(lectureTimeObject.getString("lecture_start"));
 
                             int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
+//                            currHour = 4;
                             if(days[day_of_week].equals(le.getDayOfWeek()) && currHour < lectureStartHour) {
                                 lectureName.setText(le.getLectureName() + "  -  " + le.getDayOfWeek() + "요일");
                                 lectureInfoId = le.getId();
-
+                                isAutoCheck = true;
                                 Log.d(TAG, le.toString());
                                 break;
                             }
@@ -115,6 +117,13 @@ public class AutoCheckActivity extends AppCompatActivity {
 
 
     public void onAutoCheckClick(View view) {
+
+        if(!isAutoCheck) {
+            Log.d(TAG, "현재 출결 가능한 수업이 없습니다.");
+            Toast.makeText(AutoCheckActivity.this, "현재 출결 가능한 수업이 없습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Log.d(TAG, "출석 시작");
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
 
@@ -130,12 +139,15 @@ public class AutoCheckActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, response.errorBody().toString());
+                    Toast.makeText(AutoCheckActivity.this, "자동 출석 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d(TAG, "Fail msg : " + t.getMessage());
+                Log.d(TAG, "자동 출석 실패");
+                Toast.makeText(AutoCheckActivity.this, "자동 출석 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
