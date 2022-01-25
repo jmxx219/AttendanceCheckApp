@@ -15,8 +15,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,18 +31,22 @@ import retrofit2.Response;
 public class AutoCheckActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
-
     TextView lectureName;
+    boolean isAutoCheck;
 
     Calendar rightNow;
     private int day_of_week;
-    LocalTime now;
+    LocalTime nowTime;
+    LocalDate nowDate;
 
     int currHour;
     String lectureInfoId;
     String week = "1";
-    boolean isAutoCheck;
 
+    String currDate;
+
+    private final String START_DATE = "20220302";
+//    private final String START_DATE = "20220901";
 
     private String[] days = {"일", "월", "화", "수", "목", "금", "토"};
 
@@ -51,8 +61,22 @@ public class AutoCheckActivity extends AppCompatActivity {
         rightNow = Calendar.getInstance();
         day_of_week = rightNow.get(Calendar.DAY_OF_WEEK) - 1;
 
-        now = LocalTime.now();
-        currHour = now.getHour();
+        nowTime = LocalTime.now();
+        currHour = nowTime.getHour();
+
+
+        // 현재 날짜 구하기
+        nowDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//        currDate = nowDate.format(formatter);
+        currDate = "20220401"; // test
+
+        Log.d(TAG, getDateWeekOfYear(START_DATE));
+        Log.d(TAG, getDateWeekOfYear(currDate));
+
+        // 주차 계산 : 현재 주차 - 개강일(3월 첫째주 or 9월 첫째주) 주차 + 1
+        week = String.valueOf(Integer.valueOf(getDateWeekOfYear(currDate)) - Integer.valueOf(getDateWeekOfYear(START_DATE)) + 1);
+        Log.d(TAG, week + "주차");
 
         Button checkButton = (Button) findViewById(R.id.check) ;
 
@@ -87,9 +111,9 @@ public class AutoCheckActivity extends AppCompatActivity {
                             le.setLectureStart(lectureTimeObject.getString("lecture_start"));
 
                             int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
-//                            currHour = 4;
+                            currHour = 4; // test
                             if(days[day_of_week].equals(le.getDayOfWeek()) && currHour < lectureStartHour) {
-                                lectureName.setText(le.getLectureName() + "  -  " + le.getDayOfWeek() + "요일");
+                                lectureName.setText(le.getLectureName() + "  -  " + week + "주차 " + le.getDayOfWeek() + "요일");
                                 lectureInfoId = le.getId();
                                 isAutoCheck = true;
                                 Log.d(TAG, le.toString());
@@ -114,7 +138,6 @@ public class AutoCheckActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void onAutoCheckClick(View view) {
 
@@ -151,4 +174,23 @@ public class AutoCheckActivity extends AppCompatActivity {
             }
         });
     }
+
+    public String getDateWeekOfYear(String yyyyMMdd) {
+        String weekOfYear = "";
+        try {
+            /** 20201231 기존 53주차(Calendar) > 1주차 표기 (GregorianCalendar)
+             *  20210101 기존 1주차(Calendar) > 1주차 표기 (GregorianCalendar)
+             */
+            GregorianCalendar cal = new GregorianCalendar();
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+            Date date = format.parse(yyyyMMdd);
+            cal.setTime(date);
+            int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+            // 주말인지 구한다. 1이면 일요일 7이면 토요일 - 일요일 경우 저번주 주차 가져오기
+            if(dayNum == 1) cal.add(Calendar.DATE, -7);
+            weekOfYear = Integer.toString(cal.get(Calendar.WEEK_OF_YEAR));
+        } catch (ParseException e) { }
+        return weekOfYear;
+    }
+
 }
