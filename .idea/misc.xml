@@ -15,10 +15,10 @@
         <entry key="app/src/main/res/layout/activity_manual_attendance.xml" value="0.30364583333333334" />
         <entry key="app/src/main/res/layout/home.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/lecture_list.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/listview_attendance.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/listview_attendance.xml" value="0.1" />
         <entry key="app/src/main/res/layout/listview_attendance_professor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/listview_lecture.xml" value="0.3944511459589867" />
-        <entry key="app/src/main/res/layout/listview_manual_attendance.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/listview_manual_attendance.xml" value="0.1" />
         <entry key="app/src/main/res/layout/listview_today_lecture.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/subject_list.xml" value="0.1" />
       </map>

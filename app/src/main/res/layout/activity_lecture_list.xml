@@ -37,6 +37,8 @@
         android:id="@+id/lectureListView"
         android:layout_width="331dp"
         android:layout_height="509dp"
+        android:dividerHeight="6dp"
+        android:divider="#00000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
