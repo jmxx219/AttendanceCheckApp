@@ -36,14 +36,13 @@
         app:layout_constraintTop_toBottomOf="@+id/userType" />
 
 
-
     <View
         android:id="@+id/view"
         android:layout_width="152dp"
         android:layout_height="152dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="12dp"
-        android:background="#b07dc8e7"
+        android:background="@drawable/borderline3"
         android:onClick="subjectListClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4">
@@ -55,7 +54,7 @@
         android:layout_width="152dp"
         android:layout_height="152dp"
         android:layout_marginTop="16dp"
-        android:background="#5981e89e"
+        android:background="@drawable/borderline4"
         android:onClick="autoCheckClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.295"
@@ -87,7 +86,7 @@
         android:layout_height="101dp"
         android:layout_marginStart="8dp"
        android:layout_marginTop="12dp"
-        android:background="#7d88e7"
+        android:background="@drawable/borderline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toEndOf="@+id/view"
@@ -99,7 +98,7 @@
         android:layout_width="152dp"
         android:layout_height="101dp"
         android:layout_marginTop="16dp"
-        android:background="#b5e77d7d"
+        android:background="@drawable/borderline5"
         app:layout_constraintEnd_toStartOf="@+id/view2"
         app:layout_constraintHorizontal_bias="0.649"
         app:layout_constraintStart_toStartOf="parent"
@@ -192,16 +191,16 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="현재 출석 현황"
+        android:text="현재\n출석 현황"
         android:textColor="#12175e"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.291"
-        app:layout_constraintVertical_bias="0.136"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3" />
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.244" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
