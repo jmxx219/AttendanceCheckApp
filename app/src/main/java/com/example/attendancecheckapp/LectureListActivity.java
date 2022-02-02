@@ -8,11 +8,17 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.attendancecheckapp.adapter.LectureListViewAdapter;
+import com.example.attendancecheckapp.api.RetrofitClient;
+import com.example.attendancecheckapp.data.LectureInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +32,7 @@ public class LectureListActivity extends AppCompatActivity {
     String userType;
     private ListView lecture_view;
     LectureListViewAdapter adapter;
+    Map<String, Integer> lecturesId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,8 @@ public class LectureListActivity extends AppCompatActivity {
         adapter = new LectureListViewAdapter();
         lecture_view.setAdapter(adapter);
         userType = PreferenceManager.getString(getApplicationContext(), "userType");
+
+        lecturesId = new HashMap<>();
 
         UserLectureResponse();
 
@@ -80,19 +89,31 @@ public class LectureListActivity extends AppCompatActivity {
                         for(int i=0; i<lectureArray.length(); i++){
                             JSONObject lectureObject = lectureArray.getJSONObject(i);
 
-                            LectureInfo lectureInfo = new LectureInfo();
-                            lectureInfo.setId(lectureObject.getString("lectureInfoId"));
-                            lectureInfo.setLectureId(lectureObject.getString("lectureId"));
-                            lectureInfo.setLectureName(lectureObject.getString("lectureName"));
-                            lectureInfo.setLectureRoom(lectureObject.getString("lectureRoom"));
+                            String lectureId = lectureObject.getString("lectureId");
+                            if(lecturesId.containsKey(lectureId)) {
+                                LectureInfo info = lectureInfoList.get(lecturesId.get(lectureId));
 
-                            JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
-                            lectureInfo.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
-                            lectureInfo.setLectureStart(lectureTimeObject.getString("lecture_start"));
-                            lectureInfo.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+                                JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
+                                info.setDayOfWeek(info.getDayOfWeek() + "\n" + lectureTimeObject.getString("day_of_week"));
+                                info.setLectureStart(info.getLectureStart() + "\n" + lectureTimeObject.getString("lecture_start"));
+                                info.setLectureEnd(info.getLectureEnd() + "\n" + lectureTimeObject.getString("lecture_end"));
+                            }
+                            else {
+                                LectureInfo lectureInfo = new LectureInfo();
+                                lectureInfo.setId(lectureObject.getString("lectureInfoId"));
+                                lectureInfo.setLectureId(lectureId);
+                                lectureInfo.setLectureName(lectureObject.getString("lectureName"));
+                                lectureInfo.setLectureRoom(lectureObject.getString("lectureRoom"));
 
-                            Log.d(TAG, lectureInfo.toString());
-                            lectureInfoList.add(lectureInfo);
+                                JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
+                                lectureInfo.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
+                                lectureInfo.setLectureStart(lectureTimeObject.getString("lecture_start"));
+                                lectureInfo.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+
+                                lectureInfoList.add(lectureInfo);
+                                lecturesId.put(lectureId, lectureInfoList.size() - 1);
+                                Log.d(TAG, lectureInfo.toString());
+                            }
                         }
 
                     }catch (JSONException e) {

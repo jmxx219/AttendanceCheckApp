@@ -1,4 +1,4 @@
-package com.example.attendancecheckapp;
+package com.example.attendancecheckapp.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.attendancecheckapp.PreferenceManager;
+import com.example.attendancecheckapp.R;
+import com.example.attendancecheckapp.data.Attendance;
 
 import java.util.ArrayList;
 

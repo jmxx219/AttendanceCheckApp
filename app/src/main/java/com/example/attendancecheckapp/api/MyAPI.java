@@ -1,8 +1,6 @@
-package com.example.attendancecheckapp;
+package com.example.attendancecheckapp.api;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import com.example.attendancecheckapp.data.LoginRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,7 +20,7 @@ import retrofit2.http.Query;
 3. 객체는 Body 로 json형태로 전달한다. url 끝에 / 를 빼먹으면 error 가 발생할 수 있으니 유의
  */
 
-interface MyAPI {
+public interface MyAPI {
     /**
      * User Controller
      */

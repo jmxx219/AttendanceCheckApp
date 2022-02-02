@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.attendancecheckapp.api.RetrofitClient;
+import com.example.attendancecheckapp.data.LectureInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +44,7 @@ public class AutoCheckActivity extends AppCompatActivity {
 
     int currHour;
     String lectureInfoId;
-    String week = "1";
+    String week;
 
     String currDate;
 
@@ -112,7 +115,7 @@ public class AutoCheckActivity extends AppCompatActivity {
 
                             int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
                             currHour = 4; // test
-                            if(days[day_of_week].equals(le.getDayOfWeek()) && currHour < lectureStartHour) {
+                            if(days[day_of_week].equals(le.getDayOfWeek()) && currHour < lectureStartHour && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
                                 lectureName.setText(le.getLectureName() + "  -  " + week + "주차 " + le.getDayOfWeek() + "요일");
                                 lectureInfoId = le.getId();
                                 isAutoCheck = true;

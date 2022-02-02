@@ -1,4 +1,4 @@
-package com.example.attendancecheckapp;
+package com.example.attendancecheckapp.data;
 
 import com.google.gson.annotations.SerializedName;
 

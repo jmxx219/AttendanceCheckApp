@@ -4,10 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.attendancecheckapp.api.RetrofitClient;
+import com.example.attendancecheckapp.data.ManualCheck;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,4 +118,6 @@ public class ManualProfessorAttendanceActivity extends AppCompatActivity {
         });
 
     }
+
+
 }

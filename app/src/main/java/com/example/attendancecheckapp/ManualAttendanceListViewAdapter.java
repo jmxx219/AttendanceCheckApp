@@ -11,6 +11,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendancecheckapp.api.RetrofitClient;
+import com.example.attendancecheckapp.data.ManualCheck;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;

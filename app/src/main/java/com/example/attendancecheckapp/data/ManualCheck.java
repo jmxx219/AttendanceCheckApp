@@ -1,4 +1,4 @@
-package com.example.attendancecheckapp;
+package com.example.attendancecheckapp.data;
 
 public class ManualCheck {
     private String name;

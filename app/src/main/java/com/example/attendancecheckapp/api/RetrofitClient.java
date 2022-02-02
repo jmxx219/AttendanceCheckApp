@@ -1,5 +1,6 @@
-package com.example.attendancecheckapp;
+package com.example.attendancecheckapp.api;
 
+import com.example.attendancecheckapp.api.MyAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
