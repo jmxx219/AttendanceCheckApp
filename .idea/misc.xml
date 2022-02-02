@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/borderline.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/borderline2.xml" value="0.2546875" />
+        <entry key="app/src/main/res/drawable/list_divider.xml" value="0.2994871794871795" />
         <entry key="app/src/main/res/layout/activity_attendance.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_attendance_professor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_auto_check.xml" value="0.30288461538461536" />

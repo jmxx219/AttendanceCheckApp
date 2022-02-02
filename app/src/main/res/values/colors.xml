@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#F1F4FD</color>
     <color name="red">#dc143c</color>
+    <color name="list_divider_color">#8977ad</color>
 </resources>
