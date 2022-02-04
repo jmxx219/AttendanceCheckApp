@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,13 +22,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ManualProfessorAttendanceActivity extends AppCompatActivity {
+public class ManualCheckActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
     public static Context context;
 
     private ListView attendance_view;
-    ManualAttendanceListViewAdapter adapter;
+    ManualCheckListViewAdapter adapter;
 
     private TextView lectureName;
     String lectureId;
@@ -41,11 +38,11 @@ public class ManualProfessorAttendanceActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_attendance);
+        setContentView(R.layout.activity_manual_check);
 
         context = this;
         attendance_view = (ListView) findViewById(R.id.manualAttendanceStudentListView);
-        adapter = new ManualAttendanceListViewAdapter();
+        adapter = new ManualCheckListViewAdapter();
         attendance_view.setAdapter(adapter);
 
         lectureName = (TextView) findViewById(R.id.manualAttendanceName);
@@ -56,7 +53,10 @@ public class ManualProfessorAttendanceActivity extends AppCompatActivity {
         dayOfWeek = it.getStringExtra("dayOfWeek");
         week = it.getStringExtra("week");
 
-        lectureName.setText(it.getStringExtra("lectureName") + "  -  " + week +"주차" + " "  +dayOfWeek + "요일");
+        if(it.getStringExtra("lectureName").equals("null"))
+            lectureName.setText("현재 출결 가능한 수업이 없습니다.");
+        else
+            lectureName.setText(it.getStringExtra("lectureName") + "  -  " + week +"주차" + " "  +dayOfWeek + "요일");
 
         showManualAttendance();
     }

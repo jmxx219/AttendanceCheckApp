@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ManualAttendanceListViewAdapter extends BaseAdapter {
+public class ManualCheckListViewAdapter extends BaseAdapter {
     private final String TAG = getClass().getSimpleName();
     private ArrayList<ManualCheck> listViewItemList = new ArrayList<ManualCheck>();
 
@@ -45,7 +45,7 @@ public class ManualAttendanceListViewAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_manual_attendance, parent, false);
+            convertView = inflater.inflate(R.layout.listview_manual_check, parent, false);
         }
 
         TextView studentName = (TextView) convertView.findViewById(R.id.manualStudentName) ;

@@ -36,7 +36,7 @@
             android:label="ProfessorAttendance">
         </activity>
         <activity
-            android:name=".ManualProfessorAttendanceActivity"
+            android:name=".ManualCheckActivity"
             android:label="ManualAttendance">
         </activity>
         <activity

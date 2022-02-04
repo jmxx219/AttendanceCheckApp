@@ -60,7 +60,7 @@ public class ProfessorAttendanceActivity extends AppCompatActivity {
         showProfessorLectureAttendance();
 
         attendance_view.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent(getApplicationContext(), ManualProfessorAttendanceActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ManualCheckActivity.class);
 
             // intent 객체에 데이터를 실어서 보내기
             Attendance item = (Attendance) adapter.getItem(position);
