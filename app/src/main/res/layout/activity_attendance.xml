@@ -37,31 +37,30 @@
         android:id="@+id/lectureAttendanceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:text="알고리즘 및 실습"
+        android:textColor="@color/gray"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="0.054" />
 
     <ListView
         android:id="@+id/attendanceStudentListView"
-        android:fastScrollEnabled="true"
-        android:layout_width="332dp"
-        android:layout_height="433dp"
+        android:layout_width="323dp"
+        android:layout_height="487dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/borderline"
         android:backgroundTint="@color/purple"
+        android:fastScrollEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lectureAttendanceName"
-        app:layout_constraintVertical_bias="0.151"></ListView>
+        app:layout_constraintVertical_bias="0.144"></ListView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

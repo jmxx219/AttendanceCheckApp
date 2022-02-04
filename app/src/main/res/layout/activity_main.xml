@@ -22,29 +22,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_pwd"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.666"
-        app:srcCompat="@drawable/iconly_curved_message" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="56dp"
-        app:layout_constraintBottom_toTopOf="@+id/login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.013"
-        app:srcCompat="@drawable/iconly_curved_lock" />
-
     <EditText
         android:id="@+id/et_name"
         android:layout_width="wrap_content"
@@ -53,16 +30,38 @@
         android:layout_marginTop="76dp"
         android:layout_marginEnd="96dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
-
-        android:minHeight="48dp"
         android:hint="Email ID"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
         android:textColor="#c6cedd"
         android:textColorHint="#878787"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/et_pwd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.661"
+        app:srcCompat="@drawable/iconly_curved_message" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintBottom_toTopOf="@+id/login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.026"
+        app:srcCompat="@drawable/iconly_curved_lock" />
 
     <EditText
         android:id="@+id/et_pwd"
@@ -75,8 +74,9 @@
         android:minHeight="48dp"
         android:textColor="#c6cedd"
         android:textStyle="normal"
+        android:hint="Password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.22"
+        app:layout_constraintHorizontal_bias="0.254"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/et_name"
         tools:text="Password" />

@@ -15,7 +15,9 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="심용현" />
+        android:text="심용현"
+        android:textColor="@color/gray"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/manualStudentNumber"
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
+        android:textColor="@color/gray"
         android:text="2017000000" />
 
     <View
