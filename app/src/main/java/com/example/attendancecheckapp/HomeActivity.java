@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.attendancecheckapp.adapter.TodayLectureListViewAdapter;
 import com.example.attendancecheckapp.api.RetrofitClient;
 import com.example.attendancecheckapp.data.LectureInfo;
+import com.example.attendancecheckapp.data.PreferenceManager;
 import com.example.attendancecheckapp.data.User;
 
 import org.json.JSONArray;

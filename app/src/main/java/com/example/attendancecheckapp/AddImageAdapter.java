@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class AddImageAdapter extends RecyclerView.Adapter<AddImageAdapter.ViewHolder>{
     private ArrayList<Uri> mData = null ;
@@ -62,4 +63,7 @@ public class AddImageAdapter extends RecyclerView.Adapter<AddImageAdapter.ViewHo
         return mData.size() ;
     }
 
+    public void clear() {
+        mData.clear();
+    }
 }

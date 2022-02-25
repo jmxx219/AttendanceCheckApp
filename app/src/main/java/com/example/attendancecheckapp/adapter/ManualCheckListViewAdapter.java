@@ -1,4 +1,4 @@
-package com.example.attendancecheckapp;
+package com.example.attendancecheckapp.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +11,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.attendancecheckapp.data.PreferenceManager;
+import com.example.attendancecheckapp.R;
 import com.example.attendancecheckapp.api.RetrofitClient;
 import com.example.attendancecheckapp.data.ManualCheck;
 

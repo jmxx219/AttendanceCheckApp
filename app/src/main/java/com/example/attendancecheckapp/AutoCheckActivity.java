@@ -13,20 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.attendancecheckapp.api.RetrofitClient;
-import com.example.attendancecheckapp.data.LectureInfo;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import com.example.attendancecheckapp.data.PreferenceManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;

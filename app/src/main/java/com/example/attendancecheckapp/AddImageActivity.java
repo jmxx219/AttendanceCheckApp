@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class AddImageActivity extends AppCompatActivity {
-    private static final String TAG = "MultiImageActivity";
+    private static final String TAG = "AddImageActivity";
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
 
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
@@ -53,19 +53,26 @@ public class AddImageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "uriList.size : " + String.valueOf(uriList.size()));
         if(data == null){   // 어떤 이미지도 선택하지 않은 경우
             Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
+            uriList.clear();
+            adapter.notifyDataSetChanged();
         }
         else{   // 이미지를 하나라도 선택한 경우
             ClipData clipData = data.getClipData();
             if(clipData.getItemCount() < image_cnt){     // 이미지가 3장 미만인 경우
                 Toast.makeText(getApplicationContext(), "사진을 3장 선택 해주세요.", Toast.LENGTH_LONG).show();
+                uriList.clear();
+                adapter.notifyDataSetChanged();
             }
             else{
                 Log.e("clipData", String.valueOf(clipData.getItemCount()));
 
                 if(clipData.getItemCount() > image_cnt){   // 선택한 이미지가 3장 초과인 경우
                     Toast.makeText(getApplicationContext(), "사진은 3장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
+                    uriList.clear();
+                    adapter.notifyDataSetChanged();
                 }
                 else{   // 선택한 이미지가 1장 이상 3장 이하인 경우
                     Log.e(TAG, "multiple choice");
