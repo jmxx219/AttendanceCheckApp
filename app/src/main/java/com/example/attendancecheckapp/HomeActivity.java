@@ -2,7 +2,6 @@ package com.example.attendancecheckapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.attendancecheckapp.adapter.TodayLectureListViewAdapter;
 import com.example.attendancecheckapp.api.RetrofitClient;
-import com.example.attendancecheckapp.data.Attendance;
 import com.example.attendancecheckapp.data.LectureInfo;
 import com.example.attendancecheckapp.data.User;
 
@@ -76,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_professor);
 
         userType = PreferenceManager.getString(getApplicationContext(), "userType");
+        Log.d(TAG, userType.toString());
         if(userType.equals("STUDENT")) setContentView(R.layout.activity_home_sutdent);
 
         uName = findViewById(R.id.userName);
@@ -145,8 +144,8 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToHomepageClick(View view) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://portal.koreatech.ac.kr"));
+    public void addImageClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, AddImageActivity.class);
         startActivity(intent);
     }
 
@@ -173,16 +172,16 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, dataObject.toString());
 
                         user.setName(dataObject.getString("name"));
-                        user.setUser_type(dataObject.getString("user_type"));
-                        user.setSchool_number(dataObject.getString("school_number"));
-                        Log.d(TAG, user.getSchool_number());
+                        user.setUserType(dataObject.getString("userType"));
+                        user.setSchoolNumber(dataObject.getString("schoolNumber"));
+                        Log.d(TAG, user.getSchoolNumber());
 
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
                     uName.setText(user.getName());
-                    uType.setText(user.getUser_type());
-                    if(userType.equals("STUDENT"))  stNumber.setText(user.getSchool_number());
+                    uType.setText(user.getUserType());
+                    if(userType.equals("STUDENT"))  stNumber.setText(user.getSchoolNumber());
                 } else {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, response.errorBody().toString());

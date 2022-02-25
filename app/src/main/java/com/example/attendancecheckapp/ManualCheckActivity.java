@@ -88,8 +88,8 @@ public class ManualCheckActivity extends AppCompatActivity {
                             ManualCheck student = new ManualCheck();
                             student.setName(lectureObject.getString("name"));
                             student.setSchoolNumber(lectureObject.getString("school_number"));
-                            student.setIsAttend(lectureObject.getString("isAttend"));
-                            student.setAttendanceId(lectureObject.getString("attendanceId"));
+                            student.setIsAttend(lectureObject.getString("is_attend"));
+                            student.setAttendanceId(lectureObject.getString("attendance_id"));
 
                             Log.d(TAG, student.toString());
                             studentList.add(student);

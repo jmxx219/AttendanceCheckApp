@@ -31,6 +31,10 @@ public interface MyAPI {
     @GET("user/me")
     Call<String> getUser(@Header("Authorization") String auth);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @POST("user/image")
+    Call<String> sendUserImage(@Header("Authorization") String auth);
+
 
     /**
      * Lecture Controller

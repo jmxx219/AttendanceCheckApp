@@ -12,11 +12,11 @@ public class User {
     @SerializedName("name")
     private String name;
 
-    @SerializedName("school_number")
-    private String school_number;
+    @SerializedName("schoolNumber")
+    private String schoolNumber;
 
     @SerializedName("user_type")
-    private String user_type;
+    private String userType;
 
     public String getId() {
         return id;
@@ -42,19 +42,19 @@ public class User {
         this.name = name;
     }
 
-    public String getSchool_number() {
-        return school_number;
+    public String getSchoolNumber() {
+        return schoolNumber;
     }
 
-    public void setSchool_number(String school_number) {
-        this.school_number = school_number;
+    public void setSchoolNumber(String schoolNumber) {
+        this.schoolNumber = schoolNumber;
     }
 
-    public String getUser_type() {
-        return user_type;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }
