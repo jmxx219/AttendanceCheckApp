@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.attendancecheckapp.adapter.TodayLectureListViewAdapter;
+import com.example.attendancecheckapp.api.JWTUtils;
 import com.example.attendancecheckapp.api.RetrofitClient;
 import com.example.attendancecheckapp.data.LectureInfo;
 import com.example.attendancecheckapp.data.PreferenceManager;
@@ -175,7 +176,9 @@ public class HomeActivity extends AppCompatActivity {
                         user.setName(dataObject.getString("name"));
                         user.setUserType(dataObject.getString("userType"));
                         user.setSchoolNumber(dataObject.getString("schoolNumber"));
+                        PreferenceManager.setString(getApplicationContext(), "userSchoolNumber", user.getSchoolNumber());
                         Log.d(TAG, user.getSchoolNumber());
+
 
                     }catch (JSONException e) {
                         e.printStackTrace();

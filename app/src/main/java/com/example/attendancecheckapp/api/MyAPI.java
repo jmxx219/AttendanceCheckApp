@@ -2,13 +2,22 @@ package com.example.attendancecheckapp.api;
 
 import com.example.attendancecheckapp.data.LoginRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 /*
@@ -31,10 +40,13 @@ public interface MyAPI {
     @GET("user/me")
     Call<String> getUser(@Header("Authorization") String auth);
 
-    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @Multipart
     @POST("user/image")
-    Call<String> sendUserImage(@Header("Authorization") String auth);
+    Call<String> sendUserImage(@Part List<MultipartBody.Part> files, @Header("Authorization") String auth);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("user/image")
+    Call<String> getUserImage(@Header("Authorization") String auth);
 
     /**
      * Lecture Controller
@@ -50,6 +62,8 @@ public interface MyAPI {
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("lecture/professor")
     Call<String> getLecture(@Query("lectureId") String id, @Header("Authorization") String auth);
+
+
 
 
     /**

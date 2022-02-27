@@ -15,10 +15,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.attendancecheckapp.api.RetrofitClient;
+import com.example.attendancecheckapp.data.PreferenceManager;
+import com.example.attendancecheckapp.data.User;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Multipart;
+
 public class AddImageActivity extends AppCompatActivity {
-    private static final String TAG = "AddImageActivity";
+    private final String TAG = getClass().getSimpleName();
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
 
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
@@ -26,11 +43,16 @@ public class AddImageActivity extends AppCompatActivity {
 
     private final int image_cnt = 3; // 이미지 갯
 
+    Button saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
+
+        saveButton = (Button) findViewById(R.id.save);
+        saveButton.setVisibility(View.INVISIBLE);
+        saveButton.setEnabled(false);
 
         // 앨범으로 이동하는 버튼
         Button btn_getImage = findViewById(R.id.getImage);
@@ -53,11 +75,12 @@ public class AddImageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "uriList.size : " + String.valueOf(uriList.size()));
         if(data == null){   // 어떤 이미지도 선택하지 않은 경우
             Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
             uriList.clear();
             adapter.notifyDataSetChanged();
+            saveButton.setVisibility(View.INVISIBLE);
+            saveButton.setEnabled(false);
         }
         else{   // 이미지를 하나라도 선택한 경우
             ClipData clipData = data.getClipData();
@@ -65,6 +88,8 @@ public class AddImageActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "사진을 3장 선택 해주세요.", Toast.LENGTH_LONG).show();
                 uriList.clear();
                 adapter.notifyDataSetChanged();
+                saveButton.setVisibility(View.INVISIBLE);
+                saveButton.setEnabled(false);
             }
             else{
                 Log.e("clipData", String.valueOf(clipData.getItemCount()));
@@ -73,6 +98,8 @@ public class AddImageActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "사진은 3장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
                     uriList.clear();
                     adapter.notifyDataSetChanged();
+                    saveButton.setVisibility(View.INVISIBLE);
+                    saveButton.setEnabled(false);
                 }
                 else{   // 선택한 이미지가 1장 이상 3장 이하인 경우
                     Log.e(TAG, "multiple choice");
@@ -90,8 +117,74 @@ public class AddImageActivity extends AppCompatActivity {
                     adapter = new AddImageAdapter(uriList, getApplicationContext());
                     recyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
                     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
+
+                    Toast.makeText(getApplicationContext(), "저장 버튼을 눌러주세요.", Toast.LENGTH_LONG).show();
+
+                    saveButton.setVisibility(View.VISIBLE);
+                    saveButton.setEnabled(true);
                 }
             }
         }
+        Log.d(TAG, "uriList.size : " + String.valueOf(uriList.size()));
+    }
+
+    public void onSaveClick(View view) {
+        Log.d(TAG, "Save Image POST");
+
+        String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
+
+        ArrayList<MultipartBody.Part> imageList = new ArrayList<>();
+
+        // 파일 경로들을 가지고있는 `ArrayList<Uri> uriList`
+        for(int i=0; i<uriList.size(); i++) {
+//        for(Uri uri : uriList) {
+            String path = FileUtil.getPath(uriList.get(i), this);
+            File file = new File(path);
+
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+            // 사진 파일 이름
+            String fileName = PreferenceManager.getString(getApplicationContext(), "userSchoolNumber") + (i+1) + ".jpg";
+            Log.d(TAG, fileName);
+
+            MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("files[]", fileName, requestFile);
+            imageList.add(uploadFile);
+        }
+
+        Call<String> postCall = RetrofitClient.getApiService().sendUserImage(imageList, token);
+        postCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Status Code : " + response.code());
+                    Log.d(TAG, "이미지 등록");
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        JSONArray dataArray = jsonObject.getJSONArray("data");
+
+                        for(int i=0; i<dataArray.length(); i++) {
+                            JSONObject imageObject = dataArray.getJSONObject(i);
+
+                            Log.d(TAG, imageObject.getString("file_name"));
+                            Log.d(TAG, imageObject.getString("saved_url"));
+                            Log.d(TAG, imageObject.getString("face_image_id"));
+                        }
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.d(TAG, "Status Code : " + response.code());
+                    Log.d(TAG, response.errorBody().toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d(TAG, "Fail msg : " + t.getMessage());
+            }
+        });
     }
 }
