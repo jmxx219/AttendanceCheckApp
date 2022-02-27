@@ -1,7 +1,10 @@
 package com.example.attendancecheckapp;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,7 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -69,6 +75,7 @@ public class AddImageActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
     }
+
 
     // 앨범에서 액티비티로 돌아온 후 실행되는 메서드
     @Override
@@ -135,21 +142,38 @@ public class AddImageActivity extends AppCompatActivity {
 
         ArrayList<MultipartBody.Part> imageList = new ArrayList<>();
 
+        //filepath는 String 변수로 갤러리에서 이미지를 가져올 때 photoUri.getPath()를 통해 받아온다.
+
         // 파일 경로들을 가지고있는 `ArrayList<Uri> uriList`
         for(int i=0; i<uriList.size(); i++) {
-//        for(Uri uri : uriList) {
-            String path = FileUtil.getPath(uriList.get(i), this);
-            File file = new File(path);
-
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
             // 사진 파일 이름
-            String fileName = PreferenceManager.getString(getApplicationContext(), "userSchoolNumber") + (i+1) + ".jpg";
+            String fileName = PreferenceManager.getString(getApplicationContext(), "userSchoolNumber") + "_" + (i+1) + ".jpg";
             Log.d(TAG, fileName);
 
+            String path = FileUtil.getPath(uriList.get(i), this);
+            Log.d(TAG, path);
+            File file = new File(path);
+
+//            InputStream inputStream = null;
+//            try {
+//                inputStream = getApplicationContext().getContentResolver().openInputStream(uriList.get(i));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+//
+//            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), byteArrayOutputStream.toByteArray());
+//            MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("files[]", fileName, requestBody);
+
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("files[]", fileName, requestFile);
             imageList.add(uploadFile);
         }
+
+        Log.d(TAG, imageList.get(0).body().contentType().toString());
 
         Call<String> postCall = RetrofitClient.getApiService().sendUserImage(imageList, token);
         postCall.enqueue(new Callback<String>() {
@@ -187,4 +211,5 @@ public class AddImageActivity extends AppCompatActivity {
             }
         });
     }
+
 }

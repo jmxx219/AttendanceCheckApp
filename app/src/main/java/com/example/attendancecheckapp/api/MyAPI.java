@@ -48,6 +48,7 @@ public interface MyAPI {
     @GET("user/image")
     Call<String> getUserImage(@Header("Authorization") String auth);
 
+
     /**
      * Lecture Controller
      */
@@ -56,13 +57,8 @@ public interface MyAPI {
     Call<String> getUserLecture(@Header("Authorization") String auth);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @GET("lecture/student")
-    Call<String> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
-
-    @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("lecture/professor")
     Call<String> getLecture(@Query("lectureId") String id, @Header("Authorization") String auth);
-
 
 
 
@@ -70,7 +66,11 @@ public interface MyAPI {
      * Attendance-controller
      */
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @GET("attendance/student")
+    @PATCH("attendance/auto-check")
+    Call<String> setAutoCheck(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week, @Header("Authorization") String auth);
+
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("attendance/professor/lecture")
     Call<String> getStudentList(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week, @Header("Authorization") String auth);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
@@ -78,6 +78,6 @@ public interface MyAPI {
     Call<String> setChangeOfAttendance(@Query("attendanceId") String attendanceId, @Header("Authorization") String auth);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @PATCH("attendance/auto-check")
-    Call<String> setAutoCheck(@Query("lectureInfoId") String lectureInfoId, @Query("week") String week, @Header("Authorization") String auth);
+    @GET("attendance/student/lecture")
+    Call<String> getUserLectureAttend(@Query("lectureId") String id, @Header("Authorization") String auth);
 }

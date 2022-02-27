@@ -36,7 +36,11 @@ public class LectureInfo {
     }
 
     public LectureInfo() {
-
+        this.id = "";
+        this.lecture_room = "";
+        this.day_of_week = "";
+        this.lecture_start = "";
+        this.lecture_end = "";
     }
 
     public String getId() {

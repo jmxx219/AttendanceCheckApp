@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
         rightNow = Calendar.getInstance();
 //        day_of_week = rightNow.get(Calendar.DAY_OF_WEEK) - 1;
         day_of_week = 2; // test
-        Log.d(TAG, "요일 " + day_of_week);
+        Log.d(TAG, "요일 " + days[day_of_week]);
 
         nowTime = LocalTime.now();
         currHour = nowTime.getHour();
@@ -174,8 +174,8 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, dataObject.toString());
 
                         user.setName(dataObject.getString("name"));
-                        user.setUserType(dataObject.getString("userType"));
-                        user.setSchoolNumber(dataObject.getString("schoolNumber"));
+                        user.setUserType(dataObject.getString("user_type"));
+                        user.setSchoolNumber(dataObject.getString("school_number"));
                         PreferenceManager.setString(getApplicationContext(), "userSchoolNumber", user.getSchoolNumber());
                         Log.d(TAG, user.getSchoolNumber());
 
@@ -225,42 +225,40 @@ public class HomeActivity extends AppCompatActivity {
                             JSONObject lectureObject = lectureArray.getJSONObject(i);
 
                             LectureInfo le = new LectureInfo();
-                            le.setId(lectureObject.getString("lectureInfoId"));
-                            le.setLectureId(lectureObject.getString("lectureId"));
-                            le.setLectureName(lectureObject.getString("lectureName"));
-                            le.setLectureRoom(lectureObject.getString("lectureRoom"));
+                            le.setLectureId(lectureObject.getString("lecture_id"));
+                            le.setLectureName(lectureObject.getString("lecture_name"));
 
-                            JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
-                            le.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
-                            le.setLectureStart(lectureTimeObject.getString("lecture_start"));
-                            le.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+                            JSONArray lectureInfoArray = lectureObject.getJSONArray("lecture_info_list");
+                            for(int j=0; j<lectureInfoArray.length(); j++) {
+                                JSONObject lectureInfoObject = lectureInfoArray.getJSONObject(j);
 
+                                le.setId(lectureInfoObject.getString("lecture_info_id"));
+                                le.setLectureRoom(lectureInfoObject.getString("lecture_room"));
 
-                            int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
-                            currHour = 2; // test
-                            if(!isAutoCheck && days[day_of_week].equals(le.getDayOfWeek()) && currHour <= lectureStartHour && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
-                                lectureName = le.getLectureName();
-                                lectureInfoId = le.getId();
-                                lectureId = le.getLectureId();
-                                isAutoCheck = true;
+                                JSONObject lectureTimeObject = lectureInfoObject.getJSONObject("lecture_time");
+                                le.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
+                                le.setLectureStart(lectureTimeObject.getString("lecture_start"));
+                                le.setLectureEnd(lectureTimeObject.getString("lecture_end"));
+
+                                int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
+                                currHour = 1; // test
+                                if(!isAutoCheck && days[day_of_week].equals(le.getDayOfWeek()) && currHour <= lectureStartHour && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
+                                    lectureName = le.getLectureName();
+                                    lectureInfoId = le.getId();
+                                    lectureId = le.getLectureId();
+                                    isAutoCheck = true;
+                                    Log.d(TAG, "오늘 수업: " + le.toString());
+                                    adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
+                                    adapter.notifyDataSetChanged();
+                                }
+
                                 Log.d(TAG, le.toString());
+                                lectureInfoList.add(le);
                             }
-
-                            Log.d(TAG, le.toString());
-                            lectureInfoList.add(le);
                         }
 
                     }catch (JSONException e) {
                         e.printStackTrace();
-                    }
-
-                    for(LectureInfo le : lectureInfoList){
-                        // id, lectureId, lectureRoom, lectureDay, lectureStartTime, lectureEndTime
-                        if(days[day_of_week].equals(le.getDayOfWeek())) {
-                            adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
-                            adapter.notifyDataSetChanged();
-                            Log.d(TAG, le.getId() + ", " + le.getLectureId() + ", " + le.getLectureName());
-                        }
                     }
 
                 } else {

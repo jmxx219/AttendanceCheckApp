@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.attendancecheckapp.adapter.AttendanceListViewAdapter;
 import com.example.attendancecheckapp.api.RetrofitClient;
 import com.example.attendancecheckapp.data.Attendance;
+import com.example.attendancecheckapp.data.LectureInfo;
 import com.example.attendancecheckapp.data.PreferenceManager;
 
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,26 +94,29 @@ public class ProfessorAttendanceActivity extends AppCompatActivity {
 
                     try{
                         JSONObject jsonObject = new JSONObject(response.body());
-                        JSONArray lectureArray = jsonObject.getJSONArray("data");
-
-                        for(int w =0; w < 14; w++) {
-                            for (int i = 0; i < lectureArray.length(); i++) {
-                                JSONObject lectureObject = lectureArray.getJSONObject(i);
-                                JSONObject lectureTimeObject = lectureObject.getJSONObject("lectureTime");
-
+                        JSONObject lectureObject = jsonObject.getJSONObject("data");
+                        JSONArray lectureInfoArray = lectureObject.getJSONArray("lecture_info");
+                        for(int j=0; j<lectureInfoArray.length(); j++) {
+                            JSONObject lectureInfoObject = lectureInfoArray.getJSONObject(j);
+                            JSONObject lectureTimeObject = lectureInfoObject.getJSONObject("lecture_time");
+                            for(int w =0; w < 14; w++) {
                                 Attendance attendance = new Attendance();
-                                attendance.setId(lectureObject.getString("lectureInfoId"));
+                                attendance.setId(lectureInfoObject.getString("lecture_info_id"));
                                 attendance.setWeek(String.valueOf(w + 1));
                                 attendance.setDayOfWeek(lectureTimeObject.getString("day_of_week"));
                                 attendance.setIsAttend("");
 
                                 attendanceList.add(attendance);
                             }
+
                         }
+
 
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    Collections.sort(attendanceList);
 
                     for(Attendance at : attendanceList){
                         // id, userId, week, lectureDay, isAttend

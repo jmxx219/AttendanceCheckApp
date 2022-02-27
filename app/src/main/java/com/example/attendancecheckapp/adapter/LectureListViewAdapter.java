@@ -57,7 +57,7 @@ public class LectureListViewAdapter extends BaseAdapter {
         lectureEndTime.setText(listViewItem.getLectureEnd());
 
         String[] arr = listViewItem.getDayOfWeek().split("\n");
-        for(int i=0; i< arr.length - 1; i++) text.setText(text.getText() + "\n" + "~");
+        for(int i=0; i < arr.length - 1; i++) text.setText(text.getText() + "\n" + "~");
 
         return convertView;
     }

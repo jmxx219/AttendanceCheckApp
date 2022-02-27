@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,27 +72,32 @@ public class StudentAttendanceActivity extends AppCompatActivity {
                     Log.d(TAG, "유저 강의 출석 현황");
 
                     ArrayList<Attendance> attendanceList = new ArrayList<>();
-
                     try{
                         JSONObject jsonObject = new JSONObject(response.body());
-                        JSONArray lectureArray = jsonObject.getJSONArray("data");
+                        JSONArray attendanceArray = jsonObject.getJSONArray("data");
+                        for(int i=0; i<attendanceArray.length(); i++){
+                            JSONObject attendanceObject = attendanceArray.getJSONObject(i);
 
-                        for(int i=0; i<lectureArray.length(); i++){
-                            JSONObject lectureObject = lectureArray.getJSONObject(i);
+                            JSONArray attendanceListArray = attendanceObject.getJSONArray("attendance_list");
+                            for(int j=0; j<attendanceListArray.length(); j++) {
+                                JSONObject listObject = attendanceListArray.getJSONObject(j);
 
-                            Attendance attendance = new Attendance();
-                            attendance.setId(lectureObject.getString("attendanceId"));
-                            attendance.setWeek(lectureObject.getString("week"));
-                            attendance.setDayOfWeek(lectureObject.getString("day_of_week"));
-                            attendance.setIsAttend(lectureObject.getString("isAttend"));
+                                Attendance attendance = new Attendance();
+                                attendance.setDayOfWeek(attendanceObject.getString("day_of_week"));
+                                attendance.setId(listObject.getString("attendance_id"));
+                                attendance.setWeek(listObject.getString("week"));
+                                attendance.setIsAttend(listObject.getString("is_attend"));
 
-                            Log.d(TAG, attendance.toString());
-                            attendanceList.add(attendance);
+                                Log.d(TAG, attendance.toString());
+                                attendanceList.add(attendance);
+                            }
                         }
 
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    Collections.sort(attendanceList);
 
                     for(Attendance at : attendanceList){
                         // id, userId, week, lectureDay, isAttend
