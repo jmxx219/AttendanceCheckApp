@@ -40,13 +40,17 @@ public interface MyAPI {
     @GET("user/me")
     Call<String> getUser(@Header("Authorization") String auth);
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("user/image")
+    Call<String> getUserImage(@Header("Authorization") String auth);
+
     @Multipart
     @POST("user/image")
     Call<String> sendUserImage(@Part List<MultipartBody.Part> files, @Header("Authorization") String auth);
 
-    @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @GET("user/image")
-    Call<String> getUserImage(@Header("Authorization") String auth);
+    @Multipart
+    @POST("user/image/single")
+    Call<String> sendUserImageSingle(@Part MultipartBody.Part file, @Header("Authorization") String auth);
 
 
     /**

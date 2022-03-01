@@ -47,9 +47,11 @@ public class AddImageActivity extends AppCompatActivity {
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     AddImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
 
-    private final int image_cnt = 3; // 이미지 갯
+    private final int image_cnt = 3; // 이미지 개수
 
     Button saveButton;
+
+    Uri singleImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,9 @@ public class AddImageActivity extends AppCompatActivity {
     }
 
 
-    // 앨범에서 액티비티로 돌아온 후 실행되는 메서드
+    /**
+     * 다중 이미지 전송
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -99,8 +103,6 @@ public class AddImageActivity extends AppCompatActivity {
                 saveButton.setEnabled(false);
             }
             else{
-                Log.e("clipData", String.valueOf(clipData.getItemCount()));
-
                 if(clipData.getItemCount() > image_cnt){   // 선택한 이미지가 3장 초과인 경우
                     Toast.makeText(getApplicationContext(), "사진은 3장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
                     uriList.clear();
@@ -155,21 +157,8 @@ public class AddImageActivity extends AppCompatActivity {
             Log.d(TAG, path);
             File file = new File(path);
 
-//            InputStream inputStream = null;
-//            try {
-//                inputStream = getApplicationContext().getContentResolver().openInputStream(uriList.get(i));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-//
-//            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), byteArrayOutputStream.toByteArray());
-//            MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("files[]", fileName, requestBody);
-
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("files[]", fileName, requestFile);
+            MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("file", fileName, requestFile);
             imageList.add(uploadFile);
         }
 
@@ -211,5 +200,105 @@ public class AddImageActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    /**
+     * 단일 이미지 전송
+     */
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if(data == null){   // 어떤 이미지도 선택하지 않은 경우
+//            Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
+//            uriList.clear();
+//            adapter.notifyDataSetChanged();
+//            saveButton.setVisibility(View.INVISIBLE);
+//            saveButton.setEnabled(false);
+//        }
+//        else{   // 이미지를 하나라도 선택한 경우
+//            ClipData clipData = data.getClipData();
+//            if(clipData.getItemCount() > image_cnt){
+//                Toast.makeText(getApplicationContext(), "사진은 1장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
+//                uriList.clear();
+//                adapter.notifyDataSetChanged();
+//                saveButton.setVisibility(View.INVISIBLE);
+//                saveButton.setEnabled(false);
+//            }
+//            else{   // 선택한 이미지가 1장인 경우
+//                Log.e(TAG, "single choice");
+//
+//                singleImageUri = clipData.getItemAt(0).getUri();
+//                uriList.add(singleImageUri);
+//
+//                adapter = new AddImageAdapter(uriList, getApplicationContext());
+//                recyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
+//                recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
+//
+//                Toast.makeText(getApplicationContext(), "저장 버튼을 눌러주세요.", Toast.LENGTH_LONG).show();
+//
+//                saveButton.setVisibility(View.VISIBLE);
+//                saveButton.setEnabled(true);
+//            }
+//        }
+//
+//        Log.d(TAG, "uriList.size : " + String.valueOf(uriList.size()));
+//    }
+//
+//    public void onSaveClick(View view) {
+//        Log.d(TAG, "Save Image POST");
+//
+//        String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
+//
+//        //filepath는 String 변수로 갤러리에서 이미지를 가져올 때 photoUri.getPath()를 통해 받아온다.
+//
+//        // 사진 파일 이름
+//        String fileName = PreferenceManager.getString(getApplicationContext(), "userSchoolNumber") + "_1.jpg";
+//        Log.d(TAG, fileName);
+//
+//        String path = FileUtil.getPath(singleImageUri, this);
+//        Log.d(TAG, path);
+//        File file = new File(path);
+//
+//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//        MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("file", fileName, requestFile);
+//
+//        Call<String> postCall = RetrofitClient.getApiService().sendUserImageSingle(uploadFile, token);
+//        postCall.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                if (response.isSuccessful()) {
+//                    Log.d(TAG, "Status Code : " + response.code());
+//                    Log.d(TAG, "이미지 등록");
+//
+//                    try{
+//                        JSONObject jsonObject = new JSONObject(response.body());
+//                        JSONArray dataArray = jsonObject.getJSONArray("data");
+//
+//                        for(int i=0; i<dataArray.length(); i++) {
+//                            JSONObject imageObject = dataArray.getJSONObject(i);
+//
+//                            Log.d(TAG, imageObject.getString("file_name"));
+//                            Log.d(TAG, imageObject.getString("saved_url"));
+//                            Log.d(TAG, imageObject.getString("face_image_id"));
+//                        }
+//
+//                    }catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    Log.d(TAG, "Status Code : " + response.code());
+//                    Log.d(TAG, response.errorBody().toString());
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                Log.d(TAG, "Fail msg : " + t.getMessage());
+//            }
+//        });
+//    }
+//
 
 }
