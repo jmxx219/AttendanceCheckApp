@@ -10,16 +10,16 @@
         android:id="@+id/stNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="10dp"
         android:text="2019136072"
         android:textColor="#575757"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toEndOf="@+id/userType"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.297" />
+        app:layout_constraintTop_toBottomOf="@+id/userName"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/userName"
@@ -29,7 +29,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="학생"
         android:textColor="#12175e"
-        android:textSize="28sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.097"
@@ -40,7 +40,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:text="My"
         android:textColor="#12175e"
         android:textSize="24sp"
@@ -65,34 +65,34 @@
     </View>
 
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="143dp"
-        android:layout_height="161dp"
-        android:onClick="addImageClick"
-        android:background="@drawable/borderline4"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.329"
-        app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.4"
-        tools:ignore="MissingConstraints" />
+<!--    <View-->
+<!--        android:id="@+id/view2"-->
+<!--        android:layout_width="143dp"-->
+<!--        android:layout_height="161dp"-->
+<!--        android:onClick="addImageClick"-->
+<!--        android:background="@drawable/borderline4"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView5"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.329"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/view"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView4"-->
+<!--        app:layout_constraintVertical_bias="0.4"-->
+<!--        tools:ignore="MissingConstraints" />-->
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="사진\n     추가하기"
-        android:textColor="#12175e"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="@+id/view2"
-        app:layout_constraintTop_toTopOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.152" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView8"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="사진\n     추가하기"-->
+<!--        android:textColor="#12175e"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/view2"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/view2"-->
+<!--        app:layout_constraintHorizontal_bias="0.461"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/view2"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/view2"-->
+<!--        app:layout_constraintVertical_bias="0.152" />-->
 
     <TextView
         android:id="@+id/textView6"
@@ -113,7 +113,7 @@
         android:id="@+id/userType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="10dp"
         android:text="컴퓨터공학부"
         android:textColor="#575757"
         android:textStyle="bold"
@@ -128,7 +128,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toEndOf="@+id/stNumber"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/user" />
@@ -154,6 +154,7 @@
         android:id="@+id/todayLectureListView"
         android:layout_width="333dp"
         android:layout_height="225dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="40dp"
         android:divider="#00000000"
         android:dividerHeight="6dp"

@@ -103,6 +103,7 @@ public class LectureListActivity extends AppCompatActivity {
 
                                 JSONObject lectureTimeObject = lectureInfoObject.getJSONObject("lecture_time");
                                 lectureInfo.setDayOfWeek(lectureInfo.getDayOfWeek() + "\n" + lectureTimeObject.getString("day_of_week"));
+                                Log.d(TAG, lectureTimeObject.getString("lecture_start") + " - " + lectureTimeObject.getString("lecture_end"));
                                 lectureInfo.setLectureStart(lectureInfo.getLectureStart() + "\n" + lectureTimeObject.getString("lecture_start"));
                                 lectureInfo.setLectureEnd(lectureInfo.getLectureEnd() + "\n" + lectureTimeObject.getString("lecture_end"));
                             }

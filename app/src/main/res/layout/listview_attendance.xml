@@ -8,13 +8,12 @@
 
     <TextView
         android:id="@+id/week"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:textColor="@color/gray"
-        android:text="1주차" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/gray" />
 
     <TextView
         android:id="@+id/textView7"
@@ -28,13 +27,12 @@
 
     <TextView
         android:id="@+id/dayOfWeek"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/gray"
-        android:text="수요일" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/gray" />
 
     <View
         android:id="@+id/view7"

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.attendancecheckapp.api.RetrofitClient;
+import com.example.attendancecheckapp.api.RetrofitFaceClient;
 import com.example.attendancecheckapp.data.PreferenceManager;
 import com.example.attendancecheckapp.data.User;
 
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +52,7 @@ public class AddImageActivity extends AppCompatActivity {
     private final int image_cnt = 3; // 이미지 개수
 
     Button saveButton;
+    Button getImageButton;
 
     Uri singleImageUri;
 
@@ -58,86 +61,89 @@ public class AddImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
 
+        getImageButton = (Button) findViewById(R.id.getImage);
+
         saveButton = (Button) findViewById(R.id.save);
         saveButton.setVisibility(View.INVISIBLE);
         saveButton.setEnabled(false);
 
         // 앨범으로 이동하는 버튼
-        Button btn_getImage = findViewById(R.id.getImage);
-        btn_getImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 2222);
-            }
-        });
+//        Button btn_getImage = findViewById(R.id.getImage);
+//        btn_getImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 2222);
+//            }
+//        });
 
         recyclerView = findViewById(R.id.recyclerView);
     }
 
 
+
     /**
-     * 다중 이미지 전송
+     * 이미지 촬영
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onGetImageClick(View view) {
+        Log.e(TAG, "Get Image POST");
 
-        if(data == null){   // 어떤 이미지도 선택하지 않은 경우
-            Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
-            uriList.clear();
-            adapter.notifyDataSetChanged();
-            saveButton.setVisibility(View.INVISIBLE);
-            saveButton.setEnabled(false);
-        }
-        else{   // 이미지를 하나라도 선택한 경우
-            ClipData clipData = data.getClipData();
-            if(clipData.getItemCount() < image_cnt){     // 이미지가 3장 미만인 경우
-                Toast.makeText(getApplicationContext(), "사진을 3장 선택 해주세요.", Toast.LENGTH_LONG).show();
-                uriList.clear();
-                adapter.notifyDataSetChanged();
-                saveButton.setVisibility(View.INVISIBLE);
-                saveButton.setEnabled(false);
-            }
-            else{
-                if(clipData.getItemCount() > image_cnt){   // 선택한 이미지가 3장 초과인 경우
-                    Toast.makeText(getApplicationContext(), "사진은 3장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
-                    uriList.clear();
-                    adapter.notifyDataSetChanged();
-                    saveButton.setVisibility(View.INVISIBLE);
-                    saveButton.setEnabled(false);
-                }
-                else{   // 선택한 이미지가 1장 이상 3장 이하인 경우
-                    Log.e(TAG, "multiple choice");
+        Call<ResponseBody> postCall = RetrofitFaceClient.getApiService().getUserImage();
+        postCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Status Code : " + response.code());
+                    Log.d(TAG, "촬영된 이미지 가져오기");
+                    Log.d(TAG, response.toString());
 
-                    for (int i = 0; i < clipData.getItemCount(); i++){
-                        Uri imageUri = clipData.getItemAt(i).getUri();  // 선택한 이미지들의 uri를 가져온다.
-                        try {
-                            uriList.add(imageUri);  //uri를 list에 담는다.
+//                    var inputS : InputStream = response.body()!!.byteStream()
+//                    var bmp : Bitmap = BitmapFactory.decodeStream(inputS)
+//                    imageView.setImageBitmap(bmp)
 
-                        } catch (Exception e) {
-                            Log.e(TAG, "File select error", e);
-                        }
-                    }
+//                    for (int i = 0; i < clipData.getItemCount(); i++){
+//                        Uri imageUri = clipData.getItemAt(i).getUri();  // 선택한 이미지들의 uri를 가져온다.
+//                        try {
+//                            uriList.add(imageUri);  //uri를 list에 담는다.
+//
+//                        } catch (Exception e) {
+//                            Log.e(TAG, "File select error", e);
+//                        }
+//                    }
 
-                    adapter = new AddImageAdapter(uriList, getApplicationContext());
-                    recyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
-                    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
 
-                    Toast.makeText(getApplicationContext(), "저장 버튼을 눌러주세요.", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG, "Status Code : " + response.code());
+                    Log.d(TAG, response.errorBody().toString());
 
-                    saveButton.setVisibility(View.VISIBLE);
-                    saveButton.setEnabled(true);
                 }
             }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "Fail msg : " + t.getMessage());
+            }
+        });
+
+        if(uriList.size()!=0) {
+            adapter = new AddImageAdapter(uriList, getApplicationContext());
+            recyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
+            recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
+
+            Toast.makeText(getApplicationContext(), "저장 버튼을 눌러주세요.", Toast.LENGTH_LONG).show();
+
+            saveButton.setVisibility(View.VISIBLE);
+            saveButton.setEnabled(true);
         }
-        Log.d(TAG, "uriList.size : " + String.valueOf(uriList.size()));
     }
 
-    public void onSaveClick(View view) {
+    /**
+     * 이미지 전송
+     */
+    public void onSaveImageClick(View view) {
         Log.d(TAG, "Save Image POST");
 
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
@@ -200,6 +206,63 @@ public class AddImageActivity extends AppCompatActivity {
             }
         });
     }
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if(data == null){   // 어떤 이미지도 선택하지 않은 경우
+//            Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
+//            uriList.clear();
+//            adapter.notifyDataSetChanged();
+//            saveButton.setVisibility(View.INVISIBLE);
+//            saveButton.setEnabled(false);
+//        }
+//        else{   // 이미지를 하나라도 선택한 경우
+//            ClipData clipData = data.getClipData();
+//            if(clipData.getItemCount() < image_cnt){     // 이미지가 3장 미만인 경우
+//                Toast.makeText(getApplicationContext(), "사진을 3장 선택 해주세요.", Toast.LENGTH_LONG).show();
+//                uriList.clear();
+//                adapter.notifyDataSetChanged();
+//                saveButton.setVisibility(View.INVISIBLE);
+//                saveButton.setEnabled(false);
+//            }
+//            else{
+//                if(clipData.getItemCount() > image_cnt){   // 선택한 이미지가 3장 초과인 경우
+//                    Toast.makeText(getApplicationContext(), "사진은 3장까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
+//                    uriList.clear();
+//                    adapter.notifyDataSetChanged();
+//                    saveButton.setVisibility(View.INVISIBLE);
+//                    saveButton.setEnabled(false);
+//                }
+//                else{   // 선택한 이미지가 1장 이상 3장 이하인 경우
+//                    Log.e(TAG, "multiple choice");
+//
+//                    for (int i = 0; i < clipData.getItemCount(); i++){
+//                        Uri imageUri = clipData.getItemAt(i).getUri();  // 선택한 이미지들의 uri를 가져온다.
+//                        try {
+//                            uriList.add(imageUri);  //uri를 list에 담는다.
+//
+//                        } catch (Exception e) {
+//                            Log.e(TAG, "File select error", e);
+//                        }
+//                    }
+//
+//                    adapter = new AddImageAdapter(uriList, getApplicationContext());
+//                    recyclerView.setAdapter(adapter);   // 리사이클러뷰에 어댑터 세팅
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));     // 리사이클러뷰 수평 스크롤 적용
+//
+//                    Toast.makeText(getApplicationContext(), "저장 버튼을 눌러주세요.", Toast.LENGTH_LONG).show();
+//
+//                    saveButton.setVisibility(View.VISIBLE);
+//                    saveButton.setEnabled(true);
+//                }
+//            }
+//        }
+//        Log.d(TAG, "uriList.size : " + String.valueOf(uriList.size()));
+//    }
+//
 
 
     /**

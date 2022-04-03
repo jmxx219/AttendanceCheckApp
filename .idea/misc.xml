@@ -11,13 +11,13 @@
         <entry key="app/src/main/res/drawable/borderline2.xml" value="0.2546875" />
         <entry key="app/src/main/res/drawable/borderline7.xml" value="0.27708333333333335" />
         <entry key="app/src/main/res/drawable/list_divider.xml" value="0.2994871794871795" />
-        <entry key="app/src/main/res/layout/activity_add_image.xml" value="0.32472826086956524" />
+        <entry key="app/src/main/res/layout/activity_add_image.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_attendance.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_attendance_professor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_auto_check.xml" value="0.30288461538461536" />
-        <entry key="app/src/main/res/layout/activity_home_professor.xml" value="0.2375" />
-        <entry key="app/src/main/res/layout/activity_home_sutdent.xml" value="0.2375" />
-        <entry key="app/src/main/res/layout/activity_lecture_list.xml" value="0.2504528985507246" />
+        <entry key="app/src/main/res/layout/activity_home_professor.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_home_sutdent.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_lecture_list.xml" value="0.2375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_manual_attendance.xml" value="0.30364583333333334" />
         <entry key="app/src/main/res/layout/activity_manual_check.xml" value="0.4036458333333333" />
@@ -41,5 +41,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.2375" />
+      </ProjectState>
+    </option>
   </component>
 </project>
