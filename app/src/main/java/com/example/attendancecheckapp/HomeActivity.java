@@ -62,7 +62,9 @@ public class HomeActivity extends AppCompatActivity {
     String lectureId;
     String lectureInfoId;
     String lectureName;
+    int lectureStartTime = 24;
     boolean isAutoCheck;
+
 
     private final String START_DATE = "20220302"; // 1학기 개강 일자
 //    private final String START_DATE = "20220901"; // 2학기 개강 일자
@@ -77,6 +79,7 @@ public class HomeActivity extends AppCompatActivity {
 
         userType = PreferenceManager.getString(getApplicationContext(), "userType");
         Log.d(TAG, userType.toString());
+
         if(userType.equals("STUDENT")) setContentView(R.layout.activity_home_sutdent);
 
         uName = findViewById(R.id.userName);
@@ -92,11 +95,12 @@ public class HomeActivity extends AppCompatActivity {
 
         rightNow = Calendar.getInstance();
 //        day_of_week = rightNow.get(Calendar.DAY_OF_WEEK) - 1;
-        day_of_week = 2; // test
-        Log.d(TAG, "요일 " + days[day_of_week]);
+        day_of_week = 2; // test 화요일
+
 
         nowTime = LocalTime.now();
-        currHour = nowTime.getHour();
+//        currHour = nowTime.getHour();
+        currHour = 8; // test
 
         // 현재 날짜 구하기
         nowDate = LocalDate.now();
@@ -104,12 +108,13 @@ public class HomeActivity extends AppCompatActivity {
 //        currDate = nowDate.format(formatter);
         currDate = "20220401"; // test
 
-        Log.d(TAG, getDateWeekOfYear(START_DATE));
-        Log.d(TAG, getDateWeekOfYear(currDate));
+//        Log.d(TAG, getDateWeekOfYear(START_DATE));
+//        Log.d(TAG, getDateWeekOfYear(currDate));
 
         // 주차 계산 : 현재 주차 - 개강일(3월 첫째주 or 9월 첫째주) 주차 + 1
         week = String.valueOf(Integer.valueOf(getDateWeekOfYear(currDate)) - Integer.valueOf(getDateWeekOfYear(START_DATE)) + 1);
-        Log.d(TAG, week + "주차");
+
+        Log.d(TAG, "현재 날짜: " + week + "주차 " + days[day_of_week]+ "요일 " + currHour +"시");
 
         getUserResponse();
         getTodayLectureResponse();
@@ -170,14 +175,14 @@ public class HomeActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response.body());
                         JSONObject dataObject = jsonObject.getJSONObject("data");
 
-                        Log.d(TAG, jsonObject.toString());
-                        Log.d(TAG, dataObject.toString());
+//                        Log.d(TAG, jsonObject.toString());
+//                        Log.d(TAG, dataObject.toString());
 
                         user.setName(dataObject.getString("name"));
                         user.setUserType(dataObject.getString("user_type"));
                         user.setSchoolNumber(dataObject.getString("school_number"));
                         PreferenceManager.setString(getApplicationContext(), "userSchoolNumber", user.getSchoolNumber());
-                        Log.d(TAG, user.getSchoolNumber());
+//                        Log.d(TAG, user.getSchoolNumber());
 
 
                     }catch (JSONException e) {
@@ -206,7 +211,7 @@ public class HomeActivity extends AppCompatActivity {
 
         String userId = PreferenceManager.getString(getApplicationContext(), "userId");
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
-        Log.d(TAG, userId + " : " + token);
+        Log.d(TAG, "userId: " + userId + " - " + token);
 
         Call<String> postCall = RetrofitClient.getApiService().getUserLecture(token);
         postCall.enqueue(new Callback<String>() {
@@ -241,18 +246,21 @@ public class HomeActivity extends AppCompatActivity {
                                 le.setLectureEnd(lectureTimeObject.getString("lecture_end"));
 
                                 int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
-                                currHour = 1; // test
-                                if(!isAutoCheck && days[day_of_week].equals(le.getDayOfWeek()) && currHour <= lectureStartHour && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
-                                    lectureName = le.getLectureName();
-                                    lectureInfoId = le.getId();
-                                    lectureId = le.getLectureId();
+                                Log.d(TAG, le.getDayOfWeek() +"요일, " + lectureStartHour+ "시 " + le.toString());
+                                if(days[day_of_week].equals(le.getDayOfWeek()) && currHour <= lectureStartHour && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
+                                    if(lectureStartTime > lectureStartHour) {
+                                        lectureName = le.getLectureName();
+                                        lectureInfoId = le.getId();
+                                        lectureId = le.getLectureId();
+                                        lectureStartTime = lectureStartHour;
+                                    }
                                     isAutoCheck = true;
                                     Log.d(TAG, "오늘 수업: " + le.toString());
                                     adapter.addItem(le.getId(), le.getLectureId(), le.getLectureName(), le.getLectureRoom(), le.getDayOfWeek(), le.getLectureStart(), le.getLectureEnd());
                                     adapter.notifyDataSetChanged();
                                 }
 
-                                Log.d(TAG, le.toString());
+//                                Log.d(TAG, le.toString());
                                 lectureInfoList.add(le);
                             }
                         }
