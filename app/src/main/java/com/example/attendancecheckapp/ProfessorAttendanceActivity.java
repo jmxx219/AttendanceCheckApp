@@ -82,7 +82,6 @@ public class ProfessorAttendanceActivity extends AppCompatActivity {
         String token = "Bearer " + PreferenceManager.getString(getApplicationContext(), "token");
 
         Call<String> postCall = RetrofitClient.getApiService().getLecture(lectureId, token);
-        Log.d(TAG, "tt");
         postCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

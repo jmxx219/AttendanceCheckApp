@@ -95,12 +95,12 @@ public class HomeActivity extends AppCompatActivity {
 
         rightNow = Calendar.getInstance();
 //        day_of_week = rightNow.get(Calendar.DAY_OF_WEEK) - 1;
-        day_of_week = 2; // test 화요일
+        day_of_week = 3; // test 수요일
 
 
         nowTime = LocalTime.now();
 //        currHour = nowTime.getHour();
-        currHour = 8; // test
+        currHour = 15; // test
 
         // 현재 날짜 구하기
         nowDate = LocalDate.now();
@@ -112,7 +112,8 @@ public class HomeActivity extends AppCompatActivity {
 //        Log.d(TAG, getDateWeekOfYear(currDate));
 
         // 주차 계산 : 현재 주차 - 개강일(3월 첫째주 or 9월 첫째주) 주차 + 1
-        week = String.valueOf(Integer.valueOf(getDateWeekOfYear(currDate)) - Integer.valueOf(getDateWeekOfYear(START_DATE)) + 1);
+//        week = String.valueOf(Integer.valueOf(getDateWeekOfYear(currDate)) - Integer.valueOf(getDateWeekOfYear(START_DATE)) + 1);
+        week = "1"; // test 1주차
 
         Log.d(TAG, "현재 날짜: " + week + "주차 " + days[day_of_week]+ "요일 " + currHour +"시");
 
@@ -247,8 +248,8 @@ public class HomeActivity extends AppCompatActivity {
 
                                 int lectureStartHour = Integer.valueOf(le.getLectureStart().substring(0, 2));
                                 Log.d(TAG, le.getDayOfWeek() +"요일, " + lectureStartHour+ "시 " + le.toString());
-                                if(days[day_of_week].equals(le.getDayOfWeek()) && currHour <= lectureStartHour && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
-                                    if(lectureStartTime > lectureStartHour) {
+                                if(days[day_of_week].equals(le.getDayOfWeek()) && Integer.valueOf(week) > 0 && Integer.valueOf(week) <= 14) {
+                                    if(currHour <= lectureStartHour && lectureStartTime > lectureStartHour) {
                                         lectureName = le.getLectureName();
                                         lectureInfoId = le.getId();
                                         lectureId = le.getLectureId();

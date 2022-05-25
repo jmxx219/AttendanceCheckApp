@@ -95,4 +95,10 @@ public class LectureInfo {
                 ", lecture_end='" + lecture_end + '\'' +
                 '}';
     }
+
+//    @Override
+//    public int compareTo(LectureInfo s) {
+//
+//        return Integer.valueOf(this.lecture_start).compareTo(Integer.valueOf(s.getLectureStart()));
+//    }
 }

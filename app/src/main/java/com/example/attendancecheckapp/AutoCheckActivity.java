@@ -79,7 +79,7 @@ public class AutoCheckActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "Status Code : " + response.code());
                     Log.d(TAG, response.errorBody().toString());
-                    Toast.makeText(AutoCheckActivity.this, "자동 출석 실패", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AutoCheckActivity.this, "자동 출석 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
